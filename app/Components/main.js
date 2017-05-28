@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { s } from '../styles';
 import { Nav } from './nav';
+import { Frame } from './frame';
 
 export class Main extends Component {
   constructor(props){
@@ -12,7 +12,9 @@ export class Main extends Component {
     this.defaultHeight = 300;
     this.defaultWidth = 400;
 
-    this.newWindow = this.newWindow.bind(this);
+    this.newFrame = this.newFrame.bind(this);
+    this.updateFrame = this.updateFrame.bind(this);
+    this.closeFrame = this.closeFrame.bind(this);
   }
 
   newFrame(){
@@ -38,10 +40,22 @@ export class Main extends Component {
     this.setState({frames: newFrames});
   }
 
+  closeFrame(id){
+    let newFrames = this.state.frames.filter(i => i.id != id);
+    this.setState({frames: newFrames});
+  }
+
   render(){
     return <div id="main" ref="main">
-      <Nav newWindow={this.newWindow} />
-
+      <Nav newWindow={this.newFrame} />
+      {this.state.frames.map(frame => {
+        return <Frame
+            key={frame.id}
+            {...frame}
+            updateFrame={this.updateFrame}
+            closeFrame={this.closeFrame}
+          />
+      })}
     </div>;
   }
 }

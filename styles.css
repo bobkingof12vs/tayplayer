@@ -18,16 +18,131 @@
   line-height: 32px;
   verticalA-aign: middle;
   text-size: 16px;
-  color: #ddd;
+  color: #000;
 }
 
 .nav_item {
   margin: 4px 16px;
   padding: 3px 5px;
+  user-select: none;
 }
 
 .nav_item:hover {
   cursor: pointer;
-  background-color: #607D8B;
+  background-color: #aaa;
   border-radius: 4px;
+}
+
+.frame {
+  background-color: #555;
+  position: absolute;
+  box-shadow: 0 5px 15px -5px;
+}
+
+.frame_top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 18px;
+  background-color: #607D8B;
+  cursor: move;
+  line-height: 14px;
+}
+
+.frame_left {
+  position: absolute;
+  top: 18px;
+  left: 0;
+  bottom: 0;
+  width: 5px;
+  cursor: e-resize;
+}
+
+.frame_height{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  cursor: n-resize;
+}
+
+.frame_width {
+  position: absolute;
+  top: 18px;
+  right: 0;
+  bottom: 0;
+  width: 5px;
+  cursor: e-resize;
+}
+
+.video_frame {
+  position: absolute;
+  top: 18px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.frame_change {
+  float: left;
+}
+
+.frame_close {
+  float: right;
+}
+
+.frame_close, .frame_change {
+  font-size: 12px;
+  margin: 2px 5px;
+  padding: 0 5px;
+}
+
+.frame_close:hover, .frame_change:hover {
+  cursor: pointer;
+  background-color: #aaa;
+  border-radius: 3px;
+}
+
+.change_stream {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #546E7A;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.stream_input {
+  margin: 5px;
+  background: #777;
+  border: 1px solid #222;
+  padding: 8px;
+  color: #222;
+}
+*::-webkit-input-placeholder {color: #333;}
+*:-moz-placeholder {color: #333;}
+*::-moz-placeholder {color: #333;}
+*:-ms-input-placeholder {color: #333;}
+
+input[type="radio"] {
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+.run_change {
+  font-size: 12px;
+  margin: 10px 10px 0;
+  padding: 10px;
+  width: auto;
+  border-radius: 4px;
+  background-color: #888;
+  text-align: center;
+}
+
+.run_change:hover {
+  cursor: pointer;
+  background-color: #aaa;
 }
