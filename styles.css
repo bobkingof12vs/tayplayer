@@ -1,0 +1,33 @@
+#app, #main {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: #424242;
+  font-family: consolas;
+}
+
+.nav_bar {
+  position: absolute;
+  top: 0;
+  height: 32px;
+  right: 0;
+  left: 0;
+  background-color: #546E7A;
+  line-height: 32px;
+  verticalA-aign: middle;
+  text-size: 16px;
+  color: #ddd;
+}
+
+.nav_item {
+  margin: 4px 16px;
+  padding: 3px 5px;
+}
+
+.nav_item:hover {
+  cursor: pointer;
+  background-color: #607D8B;
+  border-radius: 4px;
+}
