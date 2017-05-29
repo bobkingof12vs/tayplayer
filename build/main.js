@@ -277,6 +277,7 @@ var Main = exports.Main = function (_Component) {
     _this.onMove = _this.onMove.bind(_this);
     _this.startMove = _this.startMove.bind(_this);
     _this.autoLayout = _this.autoLayout.bind(_this);
+    _this.buildUrl = _this.buildUrl.bind(_this);
     return _this;
   }
 
@@ -455,6 +456,20 @@ var Main = exports.Main = function (_Component) {
       this.setState({ frames: newFrames });
     }
   }, {
+    key: 'buildUrl',
+    value: function buildUrl() {
+      var streams = { twitch: [], chat: [], youtube: [] };
+      this.state.frames.map(function (f) {
+        return streams[f.type].push(f.stream);
+      });
+
+      var url = window.location.origin + window.location.pathname + "?";
+      if (streams.twitch.length > 0) url += "twitch=" + streams.twitch.join(',') + "&";
+      if (streams.chat.length > 0) url += "chat=" + streams.chat.join(',') + "&";
+      if (streams.youtube.length > 0) url += "youtube=" + streams.youtube.join(',') + "&";
+      return url;
+    }
+  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       var _this6 = this;
@@ -493,7 +508,8 @@ var Main = exports.Main = function (_Component) {
         _react2.default.createElement(_nav.Nav, {
           style: { height: this.state.divy + 'px', lineHeight: this.state.divy + 'px' },
           newWindow: this.newFrame,
-          autoLayout: this.autoLayout
+          autoLayout: this.autoLayout,
+          buildUrl: this.buildUrl
         }),
         this.state.frames.map(function (frame) {
           return _react2.default.createElement(_frame2.Frame, _extends({
@@ -550,13 +566,26 @@ var Nav = exports.Nav = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this, props));
 
-    _this.state = {};
+    _this.state = {
+      link: ""
+    };
     return _this;
   }
 
   _createClass(Nav, [{
+    key: "link",
+    value: function link() {
+      var _this2 = this;
+
+      this.setState({ link: this.props.buildUrl() }, function () {
+        return _this2.refs.link.select();
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this3 = this;
+
       return _react2.default.createElement(
         "div",
         { style: this.props.style, className: "nav_bar" },
@@ -580,10 +609,13 @@ var Nav = exports.Nav = function (_Component) {
           "span",
           {
             className: "nav_item",
-            onClick: this.props.autoLayout
+            onClick: function onClick() {
+              return _this3.link();
+            }
           },
           "get link"
-        )
+        ),
+        _react2.default.createElement("input", { type: "text", ref: "link", className: "share_link", value: this.state.link })
       );
     }
   }]);

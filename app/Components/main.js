@@ -27,6 +27,7 @@ export class Main extends Component {
     this.onMove = this.onMove.bind(this);
     this.startMove = this.startMove.bind(this);
     this.autoLayout = this.autoLayout.bind(this);
+    this.buildUrl = this.buildUrl.bind(this);
   }
 
   newFrame(callback = null){
@@ -173,6 +174,20 @@ export class Main extends Component {
     this.setState({frames: newFrames});
   }
 
+  buildUrl(){
+    let streams={ twitch:[], chat:[], youtube:[] };
+    this.state.frames.map(f => streams[f.type].push(f.stream));
+
+    let url = window.location.origin+window.location.pathname+"?";
+    if(streams.twitch.length > 0)
+      url += "twitch="+streams.twitch.join(',')+"&"
+    if(streams.chat.length > 0)
+      url += "chat="+streams.chat.join(',')+"&"
+    if(streams.youtube.length > 0)
+      url += "youtube="+streams.youtube.join(',')+"&"
+    return url;
+  }
+
   componentDidMount(){
 
     let rect = this.refs.main.getBoundingClientRect();
@@ -198,6 +213,7 @@ export class Main extends Component {
         style={{height: `${this.state.divy}px`, lineHeight: `${this.state.divy}px`}}
         newWindow={this.newFrame}
         autoLayout={this.autoLayout}
+        buildUrl={this.buildUrl}
       />
       {this.state.frames.map(frame => {
         return <Frame

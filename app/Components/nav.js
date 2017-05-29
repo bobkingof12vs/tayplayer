@@ -3,7 +3,13 @@ import React, { Component } from 'react';
 export class Nav extends Component {
   constructor(props){
     super(props);
-    this.state = {};
+    this.state = {
+      link: ""
+    };
+  }
+
+  link(){
+    this.setState({link: this.props.buildUrl()}, ()=>this.refs.link.select());
   }
 
   render(){
@@ -18,8 +24,9 @@ export class Nav extends Component {
       >quick fit</span>
       <span
         className="nav_item"
-        onClick={this.props.autoLayout}
+        onClick={()=>this.link()}
       >get link</span>
+      <input type="text" ref="link" className="share_link" value={this.state.link} />
     </div>;
   }
 }

@@ -219,3 +219,9 @@ input[type="radio"] {
   margin: 7px;
   text-align: center;
 }
+
+.share_link {
+  background-color: rgba(0,0,0,0);
+  border: 0 solid black;
+  width: calc(100% - 346px);
+}
