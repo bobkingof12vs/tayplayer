@@ -19,7 +19,7 @@ export const Help = (props) => {
         <br />3. determine your stream (the underlined parts in the examples below)
         <br />    <strong>- twitch stream/chat:</strong>
         <br />        www.twitch.tv/<span style={{color: "#aaa", textDecoration: "underline"}}>basetradetv</span>
-        <br />    <strong>- twitch video:</strong>
+        <br />    <strong>- twitch vod:</strong>
         <br />        www.twitch.tv/videos/<span style={{color: "#aaa", textDecoration: "underline"}}>147466582</span>
         <br />    <strong>- youtube stream/video/chat:</strong>
         <br />        www.youtube.com/watch?v=<span style={{color: "#aaa", textDecoration: "underline"}}>4qqRZnO5z3g</span>

@@ -297,7 +297,7 @@ var Help = exports.Help = function Help(props) {
         _react2.default.createElement(
           "strong",
           null,
-          "- twitch video:"
+          "- twitch vod:"
         ),
         _react2.default.createElement("br", null),
         "        www.twitch.tv/videos/",
@@ -620,7 +620,7 @@ var Main = exports.Main = function (_Component) {
       twitch && twitch.split(',').map(function (t) {
         return frames.push(_this5.newQueryFrame("twitch", t, zindex++));
       });
-      tchat && twitch.split(',').map(function (t) {
+      tchat && tchat.split(',').map(function (t) {
         return frames.push(_this5.newQueryFrame("twitchChat", t, zindex++));
       });
       tvideo && tvideo.split(',').map(function (t) {
@@ -629,7 +629,7 @@ var Main = exports.Main = function (_Component) {
       youtube && youtube.split(',').map(function (t) {
         return frames.push(_this5.newQueryFrame("youtube", t, zindex++));
       });
-      ychat && chat.split(',').map(function (t) {
+      ychat && ychat.split(',').map(function (t) {
         return frames.push(_this5.newQueryFrame("youtubeChat", t, zindex++));
       });
       this.setState({ frames: frames, zindex: zindex });

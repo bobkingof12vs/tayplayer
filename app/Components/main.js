@@ -205,10 +205,10 @@ export class Main extends Component {
 
     let frames = [], zindex = 1;
     twitch  && twitch .split(',').map(t => frames.push(this.newQueryFrame("twitch",      t, zindex++)));
-    tchat   && twitch .split(',').map(t => frames.push(this.newQueryFrame("twitchChat",  t, zindex++)));
+    tchat   && tchat  .split(',').map(t => frames.push(this.newQueryFrame("twitchChat",  t, zindex++)));
     tvideo  && tvideo .split(',').map(t => frames.push(this.newQueryFrame("twitchVideo", t, zindex++)));
     youtube && youtube.split(',').map(t => frames.push(this.newQueryFrame("youtube",     t, zindex++)));
-    ychat   && chat   .split(',').map(t => frames.push(this.newQueryFrame("youtubeChat", t, zindex++)));
+    ychat   && ychat  .split(',').map(t => frames.push(this.newQueryFrame("youtubeChat", t, zindex++)));
     this.setState({frames, zindex});
 
     let screenupdate = (callback = ()=>{}) => {
