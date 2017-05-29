@@ -13,10 +13,14 @@ export class Frame extends Component {
   getSrc(){
     if(this.props.type == "twitch")
       return `https://player.twitch.tv/?channel=${this.props.stream}&muted=true&autoplay=true`;
-    else if(this.props.type == "chat")
+    if(this.props.type == "twitchChat")
       return `https://www.twitch.tv/${this.props.stream}/chat`;
+    else if(this.props.type == "twitchVideo")
+      return `https://player.twitch.tv/?video=${this.props.stream}`;
     else if(this.props.type == "youtube")
-      return `https://www.youtube.com/embed/${this.props.stream}`
+      return `https://www.youtube.com/embed/${this.props.stream}?autoplay=1`
+    else if(this.props.type == "youtubeChat")
+      return `https://www.youtube.com/live_chat?v=${this.props.stream}&embed_domain=tayplay.tv`
     else
       return this.props.stream;
   }
@@ -65,25 +69,21 @@ export class Frame extends Component {
         <div className="change_stream">
           <input className="stream_input" placeholder="stream name" value={this.props.stream} onChange={({target})=>updateFrame(id, {stream: target.value})}/>
           <br />
-          <label>
-            <input type="radio" checked={this.props.type=="twitch"} onChange={()=>updateFrame(id, {type: "twitch"})} />
-            twitch stream
-          </label>
-          <br />
-          <label>
-            <input type="radio" checked={this.props.type=="chat"} onChange={()=>updateFrame(id, {type: "chat"})} />
-            twitch chat
-          </label>
-          <br />
-          <label>
-            <input type="radio" checked={this.props.type=="youtube"} onChange={()=>updateFrame(id, {type:"youtube"})} />
-            youtube
-          </label>
-          {/*} <br />
-          <label>
-            <input type="radio" checked={this.props.type=="any"} onChange={()=>this.setState({type:"any"})} />
-            any embed src
-          </label> */}
+          <select
+            value={this.props.type}
+            onChange={({target})=>{console.log(target.value); updateFrame(id, {type: target.value})}}
+            className="stream_select"
+          >
+            <optgroup label="watch">
+              <option value="twitch"      label="twitch stream" />
+              <option value="twitchVideo" label="twitch video (beta)" />
+              <option value="youtube"     label="youtube video/stream" />
+            </optgroup>
+            <optgroup label="chat">
+              <option value="twitchChat"  label="twitch chat" />
+              <option value="youtubeChat" label="youtube chat" />
+            </optgroup>
+          </select>
           <br />
           <div className="run_change" onClick={(e)=>this.handleLaunchClick(e, false)}>
             launch stream

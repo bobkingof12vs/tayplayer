@@ -40,7 +40,7 @@ export class Main extends Component {
       height: this.defaultHeight,
       width: this.defaultWidth,
       zindex: this.state.zindex,
-      type: "",
+      type: "twitch",
       stream: ""
     });
     this.setState({frames, zindex: this.state.zindex + 1});
@@ -128,7 +128,7 @@ export class Main extends Component {
   autoLayout(){
     let count = this.state.frames.length;
     let rect = this.refs.main.getBoundingClientRect();
-    let width = rect.width - 9;
+    let width = rect.width;
     let height = rect.height - this.state.divy;
 
     let bestx = 1, besty = 1, bestArea = 1, area;
@@ -155,6 +155,9 @@ export class Main extends Component {
     }
 
     let curx = -1, cury = 0;
+    const {divx, divy} = this.state;
+    let newWidth = Math.round((width / bestx) / divx) * divx;
+    let newHeight = Math.round((height / besty) / divy) * divy;
     let newFrames = this.state.frames.map((_frame, index) => {
       let frame = Object.assign({}, _frame);
       curx++;
@@ -163,10 +166,10 @@ export class Main extends Component {
         curx = 0;
       }
 
-      frame.top = (cury * Math.floor(height / besty)) + this.state.divy;
-      frame.height = Math.floor(height / besty);
-      frame.left = curx * Math.floor(width / bestx);
-      frame.width = ((index == this.state.frames.length - 1) ?  (bestx - curx) : 1 ) * Math.floor(width / bestx);
+      frame.top = (cury * newHeight) + this.state.divy;
+      frame.height = newHeight;
+      frame.left = curx * newWidth;
+      frame.width = ((index == this.state.frames.length - 1) ?  (bestx - curx) : 1 ) * newWidth;
 
       return frame;
     })
@@ -175,29 +178,37 @@ export class Main extends Component {
   }
 
   buildUrl(){
-    let streams={ twitch:[], chat:[], youtube:[] };
+    let streams={ twitch:[], twitchChat:[], twitchVideo:[], youtube:[], youtubeChat:[] };
     this.state.frames.map(f => f.stream !== "" && streams[f.type].push(f.stream));
 
     let url = window.location.origin+window.location.pathname+"?";
     if(streams.twitch.length > 0)
-      url += "twitch="+streams.twitch.join(',')+"&"
-    if(streams.chat.length > 0)
-      url += "chat="+streams.chat.join(',')+"&"
+      url += "twitch="+streams.twitch.join(',')+"&";
+    if(streams.twitchChat.length > 0)
+      url += "tchat="+streams.twitchChat.join(',')+"&";
+    if(streams.twitchVideo.length > 0)
+      url += "tvideo="+streams.twitchVideo.join(',')+"&";
     if(streams.youtube.length > 0)
-      url += "youtube="+streams.youtube.join(',')+"&"
+      url += "youtube="+streams.youtube.join(',')+"&";
+    if(streams.youtubeChat.length > 0)
+      url += "ychat="+streams.youtubeChat.join(',');
     return url;
   }
 
   componentDidMount(){
 
     let twitch = getParameterByName("twitch");
-    let chat = getParameterByName("chat");
+    let tchat = getParameterByName("tchat");
+    let tvideo = getParameterByName("tvideo");
     let youtube = getParameterByName("youtube");
+    let ychat = getParameterByName("ychat");
 
     let frames = [], zindex = 1;
-    twitch && twitch.split(',').map(t => frames.push(this.newQueryFrame("twitch", t, zindex++)));
-    chat && chat.split(',').map(t => frames.push(this.newQueryFrame("chat",   t, zindex++)));
-    youtube && youtube.split(',').map(t => frames.push(this.newQueryFrame("youtube", t, zindex++)));
+    twitch  && twitch .split(',').map(t => frames.push(this.newQueryFrame("twitch",      t, zindex++)));
+    tchat   && twitch .split(',').map(t => frames.push(this.newQueryFrame("twitchChat",  t, zindex++)));
+    tvideo  && tvideo .split(',').map(t => frames.push(this.newQueryFrame("twitchVideo", t, zindex++)));
+    youtube && youtube.split(',').map(t => frames.push(this.newQueryFrame("youtube",     t, zindex++)));
+    ychat   && chat   .split(',').map(t => frames.push(this.newQueryFrame("youtubeChat", t, zindex++)));
     this.setState({frames, zindex});
 
     let screenupdate = (callback = ()=>{}) => {
