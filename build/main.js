@@ -68,7 +68,7 @@ var Frame = exports.Frame = function (_Component) {
   _createClass(Frame, [{
     key: "getSrc",
     value: function getSrc() {
-      if (this.props.type == "twitch") return "http://player.twitch.tv/?channel=" + this.props.stream + "&muted=true&autoplay=true";else if (this.props.type == "chat") return "http://www.twitch.tv/" + this.props.stream + "/chat";else if (this.props.type == "youtube") return "https://www.youtube.com/embed/" + this.props.stream;else return this.props.stream;
+      if (this.props.type == "twitch") return "https://player.twitch.tv/?channel=" + this.props.stream + "&muted=true&autoplay=true";else if (this.props.type == "chat") return "https://www.twitch.tv/" + this.props.stream + "/chat";else if (this.props.type == "youtube") return "https://www.youtube.com/embed/" + this.props.stream;else return this.props.stream;
     }
   }, {
     key: "handleLaunchClick",

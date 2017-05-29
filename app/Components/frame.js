@@ -12,9 +12,9 @@ export class Frame extends Component {
 
   getSrc(){
     if(this.props.type == "twitch")
-      return `http://player.twitch.tv/?channel=${this.props.stream}&muted=true&autoplay=true`;
+      return `https://player.twitch.tv/?channel=${this.props.stream}&muted=true&autoplay=true`;
     else if(this.props.type == "chat")
-      return `http://www.twitch.tv/${this.props.stream}/chat`;
+      return `https://www.twitch.tv/${this.props.stream}/chat`;
     else if(this.props.type == "youtube")
       return `https://www.youtube.com/embed/${this.props.stream}`
     else
