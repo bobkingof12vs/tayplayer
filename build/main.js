@@ -69,7 +69,7 @@ var Frame = exports.Frame = function (_Component) {
     key: "getSrc",
     value: function getSrc() {
       if (this.props.type == "twitch") return "https://player.twitch.tv/?channel=" + this.props.stream + "&muted=true&autoplay=true";
-      if (this.props.type == "twitchChat") return "https://www.twitch.tv/" + this.props.stream + "/chat";else if (this.props.type == "twitchVideo") return "https://player.twitch.tv/?video=" + this.props.stream;else if (this.props.type == "youtube") return "https://www.youtube.com/embed/" + this.props.stream + "?autoplay=1&origin=" + window.location.domain;else if (this.props.type == "youtubeChat") return "https://www.youtube.com/live_chat?v=" + this.props.stream + "&origin=" + window.location.domain;else return this.props.stream;
+      if (this.props.type == "twitchChat") return "https://www.twitch.tv/" + this.props.stream + "/chat";else if (this.props.type == "twitchVideo") return "https://player.twitch.tv/?video=" + this.props.stream;else if (this.props.type == "youtube") return "https://www.youtube.com/embed/" + this.props.stream + "?autoplay=1&origin=" + window.location.origin;else if (this.props.type == "youtubeChat") return "https://www.youtube.com/live_chat?v=" + this.props.stream + "&embed_domain=" + window.location.origin;else return this.props.stream;
     }
   }, {
     key: "handleLaunchClick",
