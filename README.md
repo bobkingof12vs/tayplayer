@@ -1,10 +1,7 @@
 # t_a_y_player
-the twitch and youtube player
 
-beta 1.0
-
-currently in beta, so please be kind
-
+the twitch and youtube player 
+<br> v0.1.0
 
 <strong>directions:</strong>
 1. click the "new window" button in the top left
