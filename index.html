@@ -1,76 +1,12 @@
-Html Webpack Plugin:
-<pre>
-  Error: Child compilation failed:
-  Module build failed: Error: ENOENT: no such file or directory, open 'C:\Users\Jacob\Documents\GitHub\frames.github.io\index.ejs':
-  Error: ENOENT: no such file or directory, open 'C:\Users\Jacob\Documents\GitHub\frames.github.io\index.ejs'
-  
-  - compiler.js:76 
-    [frames.github.io]/[html-webpack-plugin]/lib/compiler.js:76:16
-  
-  - Compiler.js:296 Compiler.<anonymous>
-    [frames.github.io]/[webpack]/lib/Compiler.js:296:10
-  
-  - Compiler.js:499 
-    [frames.github.io]/[webpack]/lib/Compiler.js:499:13
-  
-  - Tapable.js:138 next
-    [frames.github.io]/[tapable]/lib/Tapable.js:138:11
-  
-  - CachePlugin.js:62 Compiler.<anonymous>
-    [frames.github.io]/[webpack]/lib/CachePlugin.js:62:5
-  
-  - Tapable.js:142 Compiler.applyPluginsAsyncSeries
-    [frames.github.io]/[tapable]/lib/Tapable.js:142:13
-  
-  - Compiler.js:496 
-    [frames.github.io]/[webpack]/lib/Compiler.js:496:10
-  
-  - Tapable.js:131 Compilation.applyPluginsAsyncSeries
-    [frames.github.io]/[tapable]/lib/Tapable.js:131:46
-  
-  - Compilation.js:649 self.applyPluginsAsync.err
-    [frames.github.io]/[webpack]/lib/Compilation.js:649:19
-  
-  - Tapable.js:131 Compilation.applyPluginsAsyncSeries
-    [frames.github.io]/[tapable]/lib/Tapable.js:131:46
-  
-  - Compilation.js:640 self.applyPluginsAsync.err
-    [frames.github.io]/[webpack]/lib/Compilation.js:640:11
-  
-  - Tapable.js:131 Compilation.applyPluginsAsyncSeries
-    [frames.github.io]/[tapable]/lib/Tapable.js:131:46
-  
-  - Compilation.js:635 self.applyPluginsAsync.err
-    [frames.github.io]/[webpack]/lib/Compilation.js:635:10
-  
-  - Tapable.js:131 Compilation.applyPluginsAsyncSeries
-    [frames.github.io]/[tapable]/lib/Tapable.js:131:46
-  
-  - Compilation.js:631 sealPart2
-    [frames.github.io]/[webpack]/lib/Compilation.js:631:9
-  
-  - Tapable.js:131 Compilation.applyPluginsAsyncSeries
-    [frames.github.io]/[tapable]/lib/Tapable.js:131:46
-  
-  - Compilation.js:579 Compilation.seal
-    [frames.github.io]/[webpack]/lib/Compilation.js:579:8
-  
-  - Compiler.js:493 
-    [frames.github.io]/[webpack]/lib/Compiler.js:493:16
-  
-  - Tapable.js:225 
-    [frames.github.io]/[tapable]/lib/Tapable.js:225:11
-  
-  - Compilation.js:481 _addModuleChain
-    [frames.github.io]/[webpack]/lib/Compilation.js:481:11
-  
-  - Compilation.js:452 processModuleDependencies.err
-    [frames.github.io]/[webpack]/lib/Compilation.js:452:13
-  
-  - next_tick.js:73 _combinedTickCallback
-    internal/process/next_tick.js:73:7
-  
-  - next_tick.js:104 process._tickCallback
-    internal/process/next_tick.js:104:9
-  
-</pre><script type="text/javascript" src="build/manifest.js"></script><script type="text/javascript" src="build/vendor.js"></script><script type="text/javascript" src="build/main.js"></script>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Frames</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src= "http://player.twitch.tv/js/embed/v1.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+  <script type="text/javascript" src="build/manifest.js"></script><script type="text/javascript" src="build/vendor.js"></script><script type="text/javascript" src="build/main.js"></script></body>
+</html>

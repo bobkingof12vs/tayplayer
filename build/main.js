@@ -6,13 +6,13 @@ webpackJsonp([1],{
 "use strict";
 
 
-var _react = __webpack_require__(91);
+var _react = __webpack_require__(73);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(398);
+var _reactDom = __webpack_require__(399);
 
-var _main = __webpack_require__(198);
+var _main = __webpack_require__(199);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33,7 +33,7 @@ exports.Frame = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(91);
+var _react = __webpack_require__(73);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -223,23 +223,118 @@ var Frame = exports.Frame = function (_Component) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.Help = undefined;
+
+var _react = __webpack_require__(73);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Help = exports.Help = function Help(props) {
+  return _react2.default.createElement(
+    "div",
+    { style: { opacity: props.fade ? "" : "1" }, className: "help_text" },
+    _react2.default.createElement(
+      "pre",
+      { className: "description" },
+      "the twitch and youtube player",
+      _react2.default.createElement("br", null),
+      _react2.default.createElement("br", null),
+      "currently in beta, so please be kind",
+      _react2.default.createElement("br", null),
+      "issues should go to the ",
+      _react2.default.createElement(
+        "a",
+        { href: "" },
+        "github page"
+      )
+    ),
+    _react2.default.createElement(
+      "pre",
+      { style: { margin: 0 } },
+      _react2.default.createElement("br", null),
+      " ",
+      _react2.default.createElement("br", null),
+      _react2.default.createElement("br", null),
+      _react2.default.createElement("br", null),
+      _react2.default.createElement(
+        "strong",
+        null,
+        "directions:"
+      ),
+      _react2.default.createElement("br", null),
+      "1. click the \"new window\" button in the top left",
+      _react2.default.createElement("br", null),
+      "2. pick your stream provider",
+      _react2.default.createElement("br", null),
+      "3. determine your stream (the underlined parts in the examples below)",
+      _react2.default.createElement("br", null),
+      "  twitch: www.twitch.tv/",
+      _react2.default.createElement(
+        "span",
+        { style: { color: "#aaa", textDecoration: "underline" } },
+        "basetradetv"
+      ),
+      _react2.default.createElement("br", null),
+      "  youtube: www.youtube.com/watch?v=",
+      _react2.default.createElement(
+        "span",
+        { style: { color: "#aaa", textDecoration: "underline" } },
+        "4qqRZnO5z3g"
+      ),
+      _react2.default.createElement("br", null),
+      "    (yes, any youtube video works)",
+      _react2.default.createElement("br", null),
+      "4. hit \"launch stream\"",
+      _react2.default.createElement("br", null),
+      "5. move and resize the stream",
+      _react2.default.createElement("br", null),
+      "   - move by dragging the top bar",
+      _react2.default.createElement("br", null),
+      "   - resize by grabbing the edges",
+      _react2.default.createElement("br", null),
+      "   - or simply hit the \"quick fit\" button up top",
+      _react2.default.createElement("br", null),
+      "6. share what you",
+      "'",
+      "re watching with the \"get link\" button"
+    )
+  );
+};
+
+//ave maria, gratia plena, dominus tecum
+//benedicta tu in mulieribus, et benedictus fructus ventris tui, iesus
+//sancta maria, mater dei, ora pro nobis peccatoribus, nunc, et in hora mortis nostrae
+
+/***/ }),
+
+/***/ 199:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.Main = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(91);
+var _react = __webpack_require__(73);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _nav = __webpack_require__(199);
+var _nav = __webpack_require__(200);
 
 var _frame2 = __webpack_require__(197);
 
-var _help = __webpack_require__(484);
+var _help = __webpack_require__(198);
 
-var _utils = __webpack_require__(200);
+var _utils = __webpack_require__(201);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -533,7 +628,7 @@ var Main = exports.Main = function (_Component) {
 
 /***/ }),
 
-/***/ 199:
+/***/ 200:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -546,7 +641,7 @@ exports.Nav = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(91);
+var _react = __webpack_require__(73);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -625,7 +720,7 @@ var Nav = exports.Nav = function (_Component) {
 
 /***/ }),
 
-/***/ 200:
+/***/ 201:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -648,109 +743,14 @@ function getParameterByName(name, url) {
 
 /***/ }),
 
-/***/ 483:
+/***/ 484:
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(196);
 module.exports = __webpack_require__(195);
 
 
-/***/ }),
-
-/***/ 484:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Help = undefined;
-
-var _react = __webpack_require__(91);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Help = exports.Help = function Help(props) {
-  return _react2.default.createElement(
-    "div",
-    { style: { opacity: props.fade ? "" : "1" }, className: "help_text" },
-    _react2.default.createElement(
-      "pre",
-      { className: "description" },
-      "the twitch and youtube player",
-      _react2.default.createElement("br", null),
-      _react2.default.createElement("br", null),
-      "currently in beta, so please be kind",
-      _react2.default.createElement("br", null),
-      "issues should go to the ",
-      _react2.default.createElement(
-        "a",
-        { href: "" },
-        "github page"
-      )
-    ),
-    _react2.default.createElement(
-      "pre",
-      { style: { margin: 0 } },
-      _react2.default.createElement("br", null),
-      " ",
-      _react2.default.createElement("br", null),
-      _react2.default.createElement("br", null),
-      _react2.default.createElement("br", null),
-      _react2.default.createElement(
-        "strong",
-        null,
-        "directions:"
-      ),
-      _react2.default.createElement("br", null),
-      "1. click the \"new window\" button in the top left",
-      _react2.default.createElement("br", null),
-      "2. pick your stream provider",
-      _react2.default.createElement("br", null),
-      "3. determine your stream (the underlined parts in the examples below)",
-      _react2.default.createElement("br", null),
-      "  twitch: www.twitch.tv/",
-      _react2.default.createElement(
-        "span",
-        { style: { color: "#aaa", textDecoration: "underline" } },
-        "basetradetv"
-      ),
-      _react2.default.createElement("br", null),
-      "  youtube: www.youtube.com/watch?v=",
-      _react2.default.createElement(
-        "span",
-        { style: { color: "#aaa", textDecoration: "underline" } },
-        "4qqRZnO5z3g"
-      ),
-      _react2.default.createElement("br", null),
-      "    (yes, any youtube video works)",
-      _react2.default.createElement("br", null),
-      "4. hit \"launch stream\"",
-      _react2.default.createElement("br", null),
-      "5. move and resize the stream",
-      _react2.default.createElement("br", null),
-      "   - move by dragging the top bar",
-      _react2.default.createElement("br", null),
-      "   - resize by grabbing the edges",
-      _react2.default.createElement("br", null),
-      "   - or simply hit the \"quick fit\" button up top",
-      _react2.default.createElement("br", null),
-      "6. share what you",
-      "'",
-      "re watching with the \"get link\" button"
-    )
-  );
-};
-
-//ave maria, gratia plena, dominus tecum
-//benedicta tu in mulieribus, et benedictus fructus ventris tui, iesus
-//sancta maria, mater dei, ora pro nobis peccatoribus, nunc, et in hora mortis nostrae
-
 /***/ })
 
-},[483]);
+},[484]);
 //# sourceMappingURL=main.js.map
