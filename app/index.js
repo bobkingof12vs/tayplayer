@@ -3,6 +3,6 @@ import { render } from 'react-dom';
 import { Main } from './Components/main';
 
 render(
-    <Main />,
-    document.getElementById('app')
+  <Main />,
+  document.getElementById('app')
 );

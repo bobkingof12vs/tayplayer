@@ -4,8 +4,10 @@
   bottom: 0;
   right: 0;
   left: 0;
-  background-color: #424242;
+  background-color: #333;
   font-family: consolas;
+  user-select: none;
+  overflow: hidden;
 }
 
 .nav_bar {
@@ -15,16 +17,15 @@
   right: 0;
   left: 0;
   background-color: #546E7A;
-  line-height: 32px;
-  verticalA-aign: middle;
-  text-size: 16px;
+  vertical-align: middle;
+  font-size: 14px;
   color: #000;
 }
 
 .nav_item {
-  margin: 4px 16px;
-  padding: 3px 5px;
-  user-select: none;
+  line-height: calc(100% - 4px);
+  margin: 2px 16px;
+  padding: 1px 5px;
 }
 
 .nav_item:hover {
@@ -37,6 +38,7 @@
   background-color: #555;
   position: absolute;
   box-shadow: 0 5px 15px -5px;
+  transition: all .1s ease;
 }
 
 .frame_top {
@@ -77,12 +79,39 @@
   cursor: e-resize;
 }
 
+.frame_h_and_w {
+  position: absolute;
+  height: 10px;
+  right: 0;
+  bottom: 0;
+  width: 10px;
+  cursor: nw-resize;
+}
+
+.frame_w_and_h {
+  position: absolute;
+  height: 10px;
+  left: 0;
+  bottom: 0;
+  width: 10px;
+  cursor: ne-resize;
+}
+
 .video_frame {
   position: absolute;
   top: 18px;
   left: 0;
   right: 0;
   bottom: 0;
+}
+.blocker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0);
+  z-index: 1000000
 }
 
 .frame_change {
@@ -108,19 +137,22 @@
 .change_stream {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: calc(50% + 9px);
   transform: translate(-50%, -50%);
-  background-color: #546E7A;
   border-radius: 5px;
-  padding: 15px;
+  padding: 1px;
+  width: 150px;
+  height: 150px;
 }
 
 .stream_input {
   margin: 5px;
   background: #777;
-  border: 1px solid #222;
+  border: 1px solid #888;
   padding: 8px;
   color: #222;
+  width: calc(100% - 10px - 2px - 16px);
+  border-radius: 4px;
 }
 *::-webkit-input-placeholder {color: #333;}
 *:-moz-placeholder {color: #333;}
@@ -134,9 +166,9 @@ input[type="radio"] {
 
 .run_change {
   font-size: 12px;
-  margin: 10px 10px 0;
+  margin: 10px 5px 0;
   padding: 10px;
-  width: auto;
+  width: calc(100% - 10px - 2px - 16px);
   border-radius: 4px;
   background-color: #888;
   text-align: center;
@@ -145,4 +177,45 @@ input[type="radio"] {
 .run_change:hover {
   cursor: pointer;
   background-color: #aaa;
+}
+
+.help_text {
+  position: absolute;
+  left: 50%;
+  top: calc(50%);
+  transform: translate(-50%, -50%);
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  padding: 25px;
+  background-color: #546E7A;
+  opacity: .3;
+  z-index: -1;
+}
+
+.help_text:hover {
+  opacity: 1;
+}
+
+.help_text::before{
+  position: absolute;
+  top: -39px;
+  left: 0;
+  right: 0;
+  font-size: 20px;
+  content: "welcome to tayplayer!";
+  text-align: center;
+  background-color: #aaa;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+  padding: 8px 16px;
+  z-index: -2;
+}
+.description {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  right: 0;
+  height: 15px;
+  margin: 7px;
+  text-align: center;
 }

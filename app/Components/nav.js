@@ -7,11 +7,19 @@ export class Nav extends Component {
   }
 
   render(){
-    return <div className="nav_bar">
+    return <div style={this.props.style} className="nav_bar">
       <span
         className="nav_item"
         onClick={this.props.newWindow}
-      > new window </span>
+      >new window</span>
+      <span
+        className="nav_item"
+        onClick={this.props.autoLayout}
+      >quick fit</span>
+      <span
+        className="nav_item"
+        onClick={this.props.autoLayout}
+      >get link</span>
     </div>;
   }
 }
