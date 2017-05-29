@@ -18,9 +18,9 @@ export class Frame extends Component {
     else if(this.props.type == "twitchVideo")
       return `https://player.twitch.tv/?video=${this.props.stream}`;
     else if(this.props.type == "youtube")
-      return `https://www.youtube.com/embed/${this.props.stream}?autoplay=1`
+      return `https://www.youtube.com/embed/${this.props.stream}?autoplay=1&origin=${window.location.domain}`
     else if(this.props.type == "youtubeChat")
-      return `https://www.youtube.com/live_chat?v=${this.props.stream}&embed_domain=tayplay.tv`
+      return `https://www.youtube.com/live_chat?v=${this.props.stream}&origin=${window.location.domain}`
     else
       return this.props.stream;
   }
@@ -76,7 +76,7 @@ export class Frame extends Component {
           >
             <optgroup label="watch">
               <option value="twitch"      label="twitch stream" />
-              <option value="twitchVideo" label="twitch video (beta)" />
+              <option value="twitchVideo" label="twitch vod (beta)" />
               <option value="youtube"     label="youtube video/stream" />
             </optgroup>
             <optgroup label="chat">
