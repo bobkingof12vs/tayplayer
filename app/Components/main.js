@@ -186,8 +186,8 @@ export class Main extends Component {
       url += "twitch="+streams.twitch.join(',')+"&";
     if(streams.twitchChat.length > 0)
       url += "tchat="+streams.twitchChat.join(',')+"&";
-    if(streams.twitchVideo.length > 0)
-      url += "tvideo="+streams.twitchVideo.join(',')+"&";
+    //if(streams.twitchVideo.length > 0)
+      //url += "tvideo="+streams.twitchVideo.join(',')+"&";
     if(streams.youtube.length > 0)
       url += "youtube="+streams.youtube.join(',')+"&";
     if(streams.youtubeChat.length > 0)

@@ -164,7 +164,6 @@ var Frame = exports.Frame = function (_Component) {
               "optgroup",
               { label: "watch" },
               _react2.default.createElement("option", { value: "twitch", label: "twitch stream" }),
-              _react2.default.createElement("option", { value: "twitchVideo", label: "twitch vod (beta)" }),
               _react2.default.createElement("option", { value: "youtube", label: "youtube video/stream" })
             ),
             _react2.default.createElement(
@@ -241,20 +240,16 @@ var Help = exports.Help = function Help(props) {
     _react2.default.createElement(
       "pre",
       { className: "description" },
+      "the twitch and youtube player",
+      _react2.default.createElement("br", null),
+      _react2.default.createElement("br", null),
+      "currently in beta, so please be kind",
+      _react2.default.createElement("br", null),
+      "issues should go to the ",
       _react2.default.createElement(
-        "span",
-        { style: { userSelect: "text" } },
-        "the twitch and youtube player",
-        _react2.default.createElement("br", null),
-        _react2.default.createElement("br", null),
-        "currently in beta, so please be kind",
-        _react2.default.createElement("br", null),
-        "issues should go to the ",
-        _react2.default.createElement(
-          "a",
-          { href: "https://github.com/bobkingof12vs/tayplayer" },
-          "github page"
-        )
+        "a",
+        { target: "_blank", href: "https://github.com/bobkingof12vs/tayplayer" },
+        "github page"
       )
     ),
     _react2.default.createElement(
@@ -265,76 +260,44 @@ var Help = exports.Help = function Help(props) {
       _react2.default.createElement("br", null),
       _react2.default.createElement("br", null),
       _react2.default.createElement(
+        "strong",
+        null,
+        "directions:"
+      ),
+      _react2.default.createElement("br", null),
+      "1. click the \"new window\" button in the top left",
+      _react2.default.createElement("br", null),
+      "2. pick your stream provider",
+      _react2.default.createElement("br", null),
+      "3. determine your stream (the underlined parts in the examples below)",
+      _react2.default.createElement("br", null),
+      "   - twitch: www.twitch.tv/",
+      _react2.default.createElement(
         "span",
-        { style: { userSelect: "text" } },
-        _react2.default.createElement(
-          "strong",
-          null,
-          "directions:"
-        ),
-        _react2.default.createElement("br", null),
-        "1. click the \"new window\" button in the top left",
-        _react2.default.createElement("br", null),
-        "2. pick your stream provider",
-        _react2.default.createElement("br", null),
-        "3. determine your stream (the underlined parts in the examples below)",
-        _react2.default.createElement("br", null),
-        "    ",
-        _react2.default.createElement(
-          "strong",
-          null,
-          "- twitch stream/chat:"
-        ),
-        _react2.default.createElement("br", null),
-        "        www.twitch.tv/",
-        _react2.default.createElement(
-          "span",
-          { style: { color: "#aaa", textDecoration: "underline" } },
-          "basetradetv"
-        ),
-        _react2.default.createElement("br", null),
-        "    ",
-        _react2.default.createElement(
-          "strong",
-          null,
-          "- twitch vod:"
-        ),
-        _react2.default.createElement("br", null),
-        "        www.twitch.tv/videos/",
-        _react2.default.createElement(
-          "span",
-          { style: { color: "#aaa", textDecoration: "underline" } },
-          "147466582"
-        ),
-        _react2.default.createElement("br", null),
-        "    ",
-        _react2.default.createElement(
-          "strong",
-          null,
-          "- youtube stream/video/chat:"
-        ),
-        _react2.default.createElement("br", null),
-        "        www.youtube.com/watch?v=",
-        _react2.default.createElement(
-          "span",
-          { style: { color: "#aaa", textDecoration: "underline" } },
-          "4qqRZnO5z3g"
-        ),
-        _react2.default.createElement("br", null),
-        "4. hit \"launch stream\"",
-        _react2.default.createElement("br", null),
-        "5. move and resize the stream",
-        _react2.default.createElement("br", null),
-        "   - move by dragging the top bar",
-        _react2.default.createElement("br", null),
-        "   - resize by grabbing the edges",
-        _react2.default.createElement("br", null),
-        "   - or simply hit the \"quick fit\" button up top",
-        _react2.default.createElement("br", null),
-        "6. share what you",
-        "'",
-        "re watching with the \"get link\" button"
-      )
+        { style: { color: "#aaa", textDecoration: "underline" } },
+        "basetradetv"
+      ),
+      _react2.default.createElement("br", null),
+      "   - youtube: www.youtube.com/watch?v=",
+      _react2.default.createElement(
+        "span",
+        { style: { color: "#aaa", textDecoration: "underline" } },
+        "4qqRZnO5z3g"
+      ),
+      _react2.default.createElement("br", null),
+      "4. hit \"launch stream\"",
+      _react2.default.createElement("br", null),
+      "5. move and resize the stream",
+      _react2.default.createElement("br", null),
+      "   - move by dragging the top bar",
+      _react2.default.createElement("br", null),
+      "   - resize by grabbing the edges",
+      _react2.default.createElement("br", null),
+      "   - or simply hit the \"quick fit\" button up top",
+      _react2.default.createElement("br", null),
+      "6. share what you",
+      "'",
+      "re watching with the \"get link\" button"
     )
   );
 };
@@ -599,7 +562,8 @@ var Main = exports.Main = function (_Component) {
       var url = window.location.origin + window.location.pathname + "?";
       if (streams.twitch.length > 0) url += "twitch=" + streams.twitch.join(',') + "&";
       if (streams.twitchChat.length > 0) url += "tchat=" + streams.twitchChat.join(',') + "&";
-      if (streams.twitchVideo.length > 0) url += "tvideo=" + streams.twitchVideo.join(',') + "&";
+      //if(streams.twitchVideo.length > 0)
+      //url += "tvideo="+streams.twitchVideo.join(',')+"&";
       if (streams.youtube.length > 0) url += "youtube=" + streams.youtube.join(',') + "&";
       if (streams.youtubeChat.length > 0) url += "ychat=" + streams.youtubeChat.join(',');
       return url;

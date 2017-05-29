@@ -76,7 +76,7 @@ export class Frame extends Component {
           >
             <optgroup label="watch">
               <option value="twitch"      label="twitch stream" />
-              <option value="twitchVideo" label="twitch vod (beta)" />
+              {/*}<option value="twitchVideo" label="twitch vod (beta)" />*/}
               <option value="youtube"     label="youtube video/stream" />
             </optgroup>
             <optgroup label="chat">
