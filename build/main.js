@@ -18,6 +18,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _reactDom.render)(_react2.default.createElement(_main.Main, null), document.getElementById('app'));
 
+//known issues:
+//window resizing isn't handled verywell
+//quick fit causes spaces (probably due to rounding), doesn't use whole window, can make windows smaller than mins
+
 /***/ }),
 
 /***/ 197:
@@ -246,13 +250,13 @@ var Help = exports.Help = function Help(props) {
       "issues should go to the ",
       _react2.default.createElement(
         "a",
-        { href: "" },
+        { href: "https://github.com/jacob-chisholm/tayplayer" },
         "github page"
       )
     ),
     _react2.default.createElement(
       "pre",
-      { style: { margin: 0 } },
+      { style: { margin: 0, userSelect: "text" } },
       _react2.default.createElement("br", null),
       " ",
       _react2.default.createElement("br", null),
@@ -555,7 +559,7 @@ var Main = exports.Main = function (_Component) {
     value: function buildUrl() {
       var streams = { twitch: [], chat: [], youtube: [] };
       this.state.frames.map(function (f) {
-        return streams[f.type].push(f.stream);
+        return f.stream !== "" && streams[f.type].push(f.stream);
       });
 
       var url = window.location.origin + window.location.pathname + "?";
@@ -568,10 +572,6 @@ var Main = exports.Main = function (_Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       var _this6 = this;
-
-      var rect = this.refs.main.getBoundingClientRect();
-      var divx = rect.width / Math.floor(rect.width / 25);
-      var divy = rect.width / Math.floor(rect.width / 25);
 
       var twitch = (0, _utils.getParameterByName)("twitch");
       var chat = (0, _utils.getParameterByName)("chat");
@@ -588,8 +588,18 @@ var Main = exports.Main = function (_Component) {
       youtube && youtube.split(',').map(function (t) {
         return frames.push(_this6.newQueryFrame("youtube", t, zindex++));
       });
+      this.setState({ frames: frames, zindex: zindex });
 
-      this.setState({ divx: divx, divy: divy, frames: frames, zindex: zindex }, this.autoLayout);
+      var screenupdate = function screenupdate() {
+        var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+        var rect = _this6.refs.main.getBoundingClientRect();
+        var divx = rect.width / Math.floor(rect.width / 25);
+        var divy = rect.width / Math.floor(rect.width / 25);
+        _this6.setState({ divx: divx, divy: divy }, callback);
+      };
+      screenupdate(this.autoLayout);
+      window.addEventListener("onresize", screenupdate);
     }
   }, {
     key: 'render',
@@ -661,9 +671,7 @@ var Nav = exports.Nav = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this, props));
 
-    _this.state = {
-      link: ""
-    };
+    _this.state = { link: "" };
     return _this;
   }
 

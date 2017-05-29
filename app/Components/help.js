@@ -4,11 +4,11 @@ export const Help = (props) => {
   return <div style={{opacity: props.fade ? "" : "1"}} className="help_text">
     <pre className="description">
              the twitch and youtube player
-      <br /> 
+      <br />
       <br />currently in beta, so please be kind
-      <br />issues should go to the <a href="">github page</a>
+      <br />issues should go to the <a href="https://github.com/jacob-chisholm/tayplayer">github page</a>
     </pre>
-    <pre style={{margin: 0}}>
+    <pre style={{margin: 0, userSelect: "text"}}>
       <br /> <br /><br />
       <br /><strong>directions:</strong>
       <br />1. click the "new window" button in the top left

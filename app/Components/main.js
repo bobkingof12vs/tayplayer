@@ -176,7 +176,7 @@ export class Main extends Component {
 
   buildUrl(){
     let streams={ twitch:[], chat:[], youtube:[] };
-    this.state.frames.map(f => streams[f.type].push(f.stream));
+    this.state.frames.map(f => f.stream !== "" && streams[f.type].push(f.stream));
 
     let url = window.location.origin+window.location.pathname+"?";
     if(streams.twitch.length > 0)
@@ -190,10 +190,6 @@ export class Main extends Component {
 
   componentDidMount(){
 
-    let rect = this.refs.main.getBoundingClientRect();
-    let divx = rect.width / Math.floor(rect.width / 25);
-    let divy = rect.width / Math.floor(rect.width / 25);
-
     let twitch = getParameterByName("twitch");
     let chat = getParameterByName("chat");
     let youtube = getParameterByName("youtube");
@@ -202,8 +198,16 @@ export class Main extends Component {
     twitch && twitch.split(',').map(t => frames.push(this.newQueryFrame("twitch", t, zindex++)));
     chat && chat.split(',').map(t => frames.push(this.newQueryFrame("chat",   t, zindex++)));
     youtube && youtube.split(',').map(t => frames.push(this.newQueryFrame("youtube", t, zindex++)));
+    this.setState({frames, zindex});
 
-    this.setState({divx, divy, frames, zindex}, this.autoLayout);
+    let screenupdate = (callback = ()=>{}) => {
+      let rect = this.refs.main.getBoundingClientRect();
+      let divx = rect.width / Math.floor(rect.width / 25);
+      let divy = rect.width / Math.floor(rect.width / 25);
+      this.setState({divx, divy}, callback);
+    }
+    screenupdate(this.autoLayout);
+    window.addEventListener("onresize", screenupdate);
   }
 
   render(){
