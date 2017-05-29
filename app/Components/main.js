@@ -66,7 +66,7 @@ export class Main extends Component {
         return Object.assign({}, curFrame, value);
       return Object.assign(curFrame);
     });
-    this.setState({frames: newFrames}, ()=>console.log(this.state.frames));
+    this.setState({frames: newFrames});
   }
 
   closeFrame(id){

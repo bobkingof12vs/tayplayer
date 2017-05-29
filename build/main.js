@@ -417,15 +417,11 @@ var Main = exports.Main = function (_Component) {
   }, {
     key: 'updateFrame',
     value: function updateFrame(id, value) {
-      var _this2 = this;
-
       var newFrames = this.state.frames.map(function (curFrame) {
         if (curFrame.id == id) return Object.assign({}, curFrame, value);
         return Object.assign(curFrame);
       });
-      this.setState({ frames: newFrames }, function () {
-        return console.log(_this2.state.frames);
-      });
+      this.setState({ frames: newFrames });
     }
   }, {
     key: 'closeFrame',
@@ -438,13 +434,13 @@ var Main = exports.Main = function (_Component) {
   }, {
     key: 'startMove',
     value: function startMove(event, id, y, x, h, w) {
-      var _this3 = this;
+      var _this2 = this;
 
       window.addEventListener("mousemove", this.onMove);
       window.addEventListener("mouseup", this.endMove);
       var newFrames = this.state.frames.map(function (curFrame) {
         var frame = Object.assign(curFrame);
-        if (frame.id == id) frame.zindex = _this3.state.zindex;
+        if (frame.id == id) frame.zindex = _this2.state.zindex;
         return frame;
       });
       this.setState({
@@ -463,7 +459,7 @@ var Main = exports.Main = function (_Component) {
   }, {
     key: 'onMove',
     value: function onMove(_ref) {
-      var _this4 = this;
+      var _this3 = this;
 
       var clientX = _ref.clientX,
           clientY = _ref.clientY;
@@ -483,10 +479,10 @@ var Main = exports.Main = function (_Component) {
       var newFrames = frames.map(function (curFrame) {
         if (curFrame.id == frameid) {
           var newFrame = Object.assign(curFrame);
-          newFrame.top = _this4.clamp(newFrame.top + dir.y * dy, divy, mainRect.height - divy);
-          newFrame.left = _this4.clamp(newFrame.left + dir.x * dx, 0, mainRect.width - 12);
-          newFrame.height = _this4.clamp(newFrame.height + dir.h * dy, 175, mainRect.height - divy - 18);
-          newFrame.width = _this4.clamp(newFrame.width + dir.w * dx, 175, mainRect.width);
+          newFrame.top = _this3.clamp(newFrame.top + dir.y * dy, divy, mainRect.height - divy);
+          newFrame.left = _this3.clamp(newFrame.left + dir.x * dx, 0, mainRect.width - 12);
+          newFrame.height = _this3.clamp(newFrame.height + dir.h * dy, 175, mainRect.height - divy - 18);
+          newFrame.width = _this3.clamp(newFrame.width + dir.w * dx, 175, mainRect.width);
           return newFrame;
         }
         return Object.assign(curFrame);
@@ -505,7 +501,7 @@ var Main = exports.Main = function (_Component) {
   }, {
     key: 'autoLayout',
     value: function autoLayout() {
-      var _this5 = this;
+      var _this4 = this;
 
       var count = this.state.frames.length;
       var rect = this.refs.main.getBoundingClientRect();
@@ -544,10 +540,10 @@ var Main = exports.Main = function (_Component) {
           curx = 0;
         }
 
-        frame.top = cury * Math.floor(height / besty) + _this5.state.divy;
+        frame.top = cury * Math.floor(height / besty) + _this4.state.divy;
         frame.height = Math.floor(height / besty);
         frame.left = curx * Math.floor(width / bestx);
-        frame.width = (index == _this5.state.frames.length - 1 ? bestx - curx : 1) * Math.floor(width / bestx);
+        frame.width = (index == _this4.state.frames.length - 1 ? bestx - curx : 1) * Math.floor(width / bestx);
 
         return frame;
       });
@@ -571,7 +567,7 @@ var Main = exports.Main = function (_Component) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var _this6 = this;
+      var _this5 = this;
 
       var twitch = (0, _utils.getParameterByName)("twitch");
       var chat = (0, _utils.getParameterByName)("chat");
@@ -580,23 +576,23 @@ var Main = exports.Main = function (_Component) {
       var frames = [],
           zindex = 1;
       twitch && twitch.split(',').map(function (t) {
-        return frames.push(_this6.newQueryFrame("twitch", t, zindex++));
+        return frames.push(_this5.newQueryFrame("twitch", t, zindex++));
       });
       chat && chat.split(',').map(function (t) {
-        return frames.push(_this6.newQueryFrame("chat", t, zindex++));
+        return frames.push(_this5.newQueryFrame("chat", t, zindex++));
       });
       youtube && youtube.split(',').map(function (t) {
-        return frames.push(_this6.newQueryFrame("youtube", t, zindex++));
+        return frames.push(_this5.newQueryFrame("youtube", t, zindex++));
       });
       this.setState({ frames: frames, zindex: zindex });
 
       var screenupdate = function screenupdate() {
         var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
 
-        var rect = _this6.refs.main.getBoundingClientRect();
+        var rect = _this5.refs.main.getBoundingClientRect();
         var divx = rect.width / Math.floor(rect.width / 25);
         var divy = rect.width / Math.floor(rect.width / 25);
-        _this6.setState({ divx: divx, divy: divy }, callback);
+        _this5.setState({ divx: divx, divy: divy }, callback);
       };
       screenupdate(this.autoLayout);
       window.addEventListener("onresize", screenupdate);
@@ -604,7 +600,7 @@ var Main = exports.Main = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this7 = this;
+      var _this6 = this;
 
       return _react2.default.createElement(
         'div',
@@ -620,12 +616,12 @@ var Main = exports.Main = function (_Component) {
           return _react2.default.createElement(_frame2.Frame, _extends({
             key: frame.id
           }, frame, {
-            divx: _this7.state.divx,
-            divy: _this7.state.divy,
-            updateFrame: _this7.updateFrame,
-            closeFrame: _this7.closeFrame,
-            startMove: _this7.startMove,
-            mainRect: _this7.refs.main.getBoundingClientRect()
+            divx: _this6.state.divx,
+            divy: _this6.state.divy,
+            updateFrame: _this6.updateFrame,
+            closeFrame: _this6.closeFrame,
+            startMove: _this6.startMove,
+            mainRect: _this6.refs.main.getBoundingClientRect()
           }));
         }),
         this.state.dir !== null && _react2.default.createElement('div', { className: 'blocker' })
