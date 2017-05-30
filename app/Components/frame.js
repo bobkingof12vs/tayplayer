@@ -8,6 +8,7 @@ export class Frame extends Component {
     };
     this.handleLaunchClick = this.handleLaunchClick.bind(this);
     this.handleCloseClick = this.handleCloseClick.bind(this);
+    this.updateStream = this.updateStream.bind(this);
   }
 
   getSrc(){
@@ -35,6 +36,12 @@ export class Frame extends Component {
     event.preventDefault();
     event.stopPropagation();
     this.props.closeFrame(this.props.id)
+  }
+
+  updateStream({target}){
+    let stream = target.value;
+    stream = stream.replace(/\W/g, '');
+    this.props.updateFrame(this.props.id, {stream});
   }
 
   componentDidMount(){
@@ -67,7 +74,7 @@ export class Frame extends Component {
       {
         this.state.changingStreams &&
         <div className="change_stream">
-          <input className="stream_input" placeholder="stream name" value={this.props.stream} onChange={({target})=>updateFrame(id, {stream: target.value})}/>
+          <input className="stream_input" placeholder="stream name" value={this.props.stream} onChange={this.updateStream}/>
           <br />
           <select
             value={this.props.type}

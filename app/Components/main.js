@@ -35,8 +35,8 @@ export class Main extends Component {
     let frames = Array.from(this.state.frames);
     frames.push({
       id: Date.now(),
-      top: Math.floor((rect.height / 2) - (this.defaultHeight / 2)),
-      left: Math.floor((rect.width / 2) - (this.defaultWidth / 2)),
+      top: Math.floor((rect.height / 2) - (this.defaultHeight / 2)) - (rect.height / 4) + (Math.random() * (rect.height / 2)),
+      left: Math.floor((rect.width / 2) - (this.defaultWidth / 2))  - (rect.width / 4)  + (Math.random() * (rect.width / 2)),
       height: this.defaultHeight,
       width: this.defaultWidth,
       zindex: this.state.zindex,
