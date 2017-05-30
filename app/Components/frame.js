@@ -82,13 +82,13 @@ export class Frame extends Component {
             className="stream_select"
           >
             <optgroup label="watch">
-              <option value="twitch"      label="twitch stream" />
+              <option value="twitch" label="twitch stream" > twitch stream </option>
               {/*}<option value="twitchVideo" label="twitch vod (beta)" />*/}
-              <option value="youtube"     label="youtube video/stream" />
+              <option value="youtube" label="youtube video/stream" > youtube video/stream </option>
             </optgroup>
             <optgroup label="chat">
-              <option value="twitchChat"  label="twitch chat" />
-              <option value="youtubeChat" label="youtube chat" />
+              <option value="twitchChat" label="twitch chat" > twitch chat </option>
+              <option value="youtubeChat" label="youtube chat" > youtube chat </option>
             </optgroup>
           </select>
           <br />

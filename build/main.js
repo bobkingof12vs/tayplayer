@@ -517,14 +517,30 @@ var Frame = exports.Frame = function (_Component) {
             _react2.default.createElement(
               "optgroup",
               { label: "watch" },
-              _react2.default.createElement("option", { value: "twitch", label: "twitch stream" }),
-              _react2.default.createElement("option", { value: "youtube", label: "youtube video/stream" })
+              _react2.default.createElement(
+                "option",
+                { value: "twitch", label: "twitch stream" },
+                " twitch stream "
+              ),
+              _react2.default.createElement(
+                "option",
+                { value: "youtube", label: "youtube video/stream" },
+                " youtube video/stream "
+              )
             ),
             _react2.default.createElement(
               "optgroup",
               { label: "chat" },
-              _react2.default.createElement("option", { value: "twitchChat", label: "twitch chat" }),
-              _react2.default.createElement("option", { value: "youtubeChat", label: "youtube chat" })
+              _react2.default.createElement(
+                "option",
+                { value: "twitchChat", label: "twitch chat" },
+                " twitch chat "
+              ),
+              _react2.default.createElement(
+                "option",
+                { value: "youtubeChat", label: "youtube chat" },
+                " youtube chat "
+              )
             )
           ),
           _react2.default.createElement("br", null),
