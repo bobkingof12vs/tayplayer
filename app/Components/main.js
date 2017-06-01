@@ -75,6 +75,8 @@ export class Main extends Component {
   }
 
   startMove(event, id, y, x, h, w){
+    event.stopPropagation();
+    event.preventDefault();
     window.addEventListener("mousemove", this.onMove);
     window.addEventListener("mouseup", this.endMove);
     let newFrames = this.state.frames.map(curFrame => {

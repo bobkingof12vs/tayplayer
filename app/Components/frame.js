@@ -77,18 +77,17 @@ export class Frame extends Component {
           <input className="stream_input" placeholder="stream name" value={this.props.stream} onChange={this.updateStream}/>
           <br />
           <select
-            value={this.props.type}
             onChange={({target})=>{console.log(target.value); updateFrame(id, {type: target.value})}}
             className="stream_select"
           >
             <optgroup label="watch">
-              <option value="twitch" label="twitch stream" > twitch stream </option>
+              <option value="twitch"> twitch stream </option>
               {/*}<option value="twitchVideo" label="twitch vod (beta)" />*/}
-              <option value="youtube" label="youtube video/stream" > youtube video/stream </option>
+              <option value="youtube"> youtube video/stream </option>
             </optgroup>
             <optgroup label="chat">
-              <option value="twitchChat" label="twitch chat" > twitch chat </option>
-              <option value="youtubeChat" label="youtube chat" > youtube chat </option>
+              <option value="twitchChat"> twitch chat </option>
+              <option value="youtubeChat"> youtube chat </option>
             </optgroup>
           </select>
           <br />
@@ -111,11 +110,13 @@ export class Frame extends Component {
         />
       }
 
-      <div className="frame_left"     onMouseDown={(e)=>this.props.startMove(e, id, 0, 1, 0, -1)}/>
-      <div className="frame_height"   onMouseDown={(e)=>this.props.startMove(e, id, 0, 0, 1,  0)}/>
-      <div className="frame_width"    onMouseDown={(e)=>this.props.startMove(e, id, 0, 0, 0,  1)}/>
-      <div className="frame_h_and_w"  onMouseDown={(e)=>this.props.startMove(e, id, 0, 0, 1,  1)}/>
-      <div className="frame_w_and_h"  onMouseDown={(e)=>this.props.startMove(e, id, 0, 1, 1, -1)}/>
+      <div className="frame_left"         onMouseDown={(e)=>this.props.startMove(e, id, 0, 1,  0, -1)}/>
+      <div className="frame_height"       onMouseDown={(e)=>this.props.startMove(e, id, 0, 0,  1,  0)}/>
+      <div className="frame_width"        onMouseDown={(e)=>this.props.startMove(e, id, 0, 0,  0,  1)}/>
+      <div className="frame_h_and_w"      onMouseDown={(e)=>this.props.startMove(e, id, 0, 0,  1,  1)}/>
+      <div className="frame_w_and_h"      onMouseDown={(e)=>this.props.startMove(e, id, 0, 1,  1, -1)}/>
+      <div className="frame_h_and_w_top"  onMouseDown={(e)=>this.props.startMove(e, id, 1, 0, -1,  1)}/>
+      <div className="frame_w_and_h_top"  onMouseDown={(e)=>this.props.startMove(e, id, 1, 1, -1, -1)}/>
     </div>;
   }
 }
