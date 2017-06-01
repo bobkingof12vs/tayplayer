@@ -29,6 +29,8 @@ export class Frame extends Component {
   handleLaunchClick(event, changingStreams){
     event.preventDefault();
     event.stopPropagation();
+    if(this.props.stream == "")
+      return;
     this.setState({changingStreams, src: this.getSrc()});
   }
 
@@ -77,6 +79,7 @@ export class Frame extends Component {
           <input className="stream_input" placeholder="stream name" value={this.props.stream} onChange={this.updateStream}/>
           <br />
           <select
+            defaultValue={this.props.type}
             onChange={({target})=>{console.log(target.value); updateFrame(id, {type: target.value})}}
             className="stream_select"
           >

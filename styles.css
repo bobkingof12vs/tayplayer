@@ -220,10 +220,6 @@
   z-index: -1;
 }
 
-.help_text:hover {
-  opacity: 1;
-}
-
 .help_text::before{
   position: absolute;
   top: -39px;

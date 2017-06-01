@@ -77,6 +77,7 @@ var Frame = exports.Frame = function (_Component) {
     value: function handleLaunchClick(event, changingStreams) {
       event.preventDefault();
       event.stopPropagation();
+      if (this.props.stream == "") return;
       this.setState({ changingStreams: changingStreams, src: this.getSrc() });
     }
   }, {
@@ -160,6 +161,7 @@ var Frame = exports.Frame = function (_Component) {
           _react2.default.createElement(
             "select",
             {
+              defaultValue: this.props.type,
               onChange: function onChange(_ref2) {
                 var target = _ref2.target;
                 console.log(target.value);updateFrame(id, { type: target.value });
