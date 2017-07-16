@@ -125,7 +125,6 @@ var Frame = exports.Frame = function (_Component) {
         width: width * 100 + "%",
         zIndex: zindex
       };
-      console.log(style);
 
       return _react2.default.createElement(
         "div",

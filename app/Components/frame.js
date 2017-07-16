@@ -62,7 +62,6 @@ export class Frame extends Component {
       width:  (width  * 100) + "%",
       zIndex: zindex
     };
-    console.log(style);
 
     return <div className="frame" style={style}>
 
