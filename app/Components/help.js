@@ -21,7 +21,6 @@ export const Help = (props) => {
       <br />   - move by dragging the top bar
       <br />   - resize by grabbing the edges
       <br />   - or simply hit the "quick fit" button up top
-      <br />6. share what you{"'"}re watching with the "get link" button
     </pre>
   </div>
 }

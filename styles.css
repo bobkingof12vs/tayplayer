@@ -33,6 +33,7 @@
   line-height: calc(100% - 4px);
   padding: 4px;
   vertical-align: middle;
+  width: 120px
 }
 
 .nav_item:hover {
@@ -40,11 +41,16 @@
   text-decoration: underline;
 }
 
+.shortcut {
+  float: right;
+  color: rgba(50, 50, 50, .5);
+}
+
 .frame {
   background-color: #555;
   position: absolute;
   box-shadow: 0 5px 15px -5px;
-  transition: all .05s ease;
+  __transition: width .1s ease, height .1s ease;
 }
 
 .frame_top {
@@ -58,7 +64,7 @@
   line-height: 14px;
 }
 
-.frame_left {
+.frame_x {
   position: absolute;
   top: 18px;
   left: 0;
@@ -67,7 +73,7 @@
   cursor: e-resize;
 }
 
-.frame_height{
+.frame_h{
   position: absolute;
   bottom: 0;
   left: 0;
@@ -76,7 +82,7 @@
   cursor: n-resize;
 }
 
-.frame_width {
+.frame_w {
   position: absolute;
   top: 18px;
   right: 0;
@@ -94,7 +100,7 @@
   cursor: nw-resize;
 }
 
-.frame_w_and_h {
+.frame_x_and_h {
   position: absolute;
   height: 10px;
   left: 0;
@@ -103,7 +109,7 @@
   cursor: ne-resize;
 }
 
-.frame_h_and_w_top {
+.frame_y_and_w {
   position: absolute;
   height: 10px;
   right: 0;
@@ -112,7 +118,7 @@
   cursor: ne-resize;
 }
 
-.frame_w_and_h_top {
+.frame_x_and_y {
   position: absolute;
   height: 10px;
   left: 0;

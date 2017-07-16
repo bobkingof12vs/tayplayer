@@ -132,23 +132,23 @@ var Frame = exports.Frame = function (_Component) {
         _react2.default.createElement(
           "div",
           { className: "frame_top", onMouseDown: function onMouseDown(e) {
-              return _this2.props.startMove(e, id, 1, 1, 0, 0);
+              return _this2.props.startMove(e, id, 1, 1, -1, -1);
             } },
-          !this.state.changingStreams && _react2.default.createElement(
-            "div",
-            { className: "frame_change", onMouseDown: function onMouseDown(e) {
-                return e.stopPropagation();
-              }, onClick: function onClick(e) {
-                return _this2.handleLaunchClick(e, true);
-              } },
-            "change"
-          ),
           _react2.default.createElement(
             "div",
             { className: "frame_close", onMouseDown: function onMouseDown(e) {
                 return e.stopPropagation();
               }, onClick: this.handleCloseClick },
             "close"
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "frame_close", onMouseDown: function onMouseDown(e) {
+                return e.stopPropagation();
+              }, onClick: function onClick(e) {
+                return _this2.handleLaunchClick(e, true);
+              } },
+            "change"
           )
         ),
         this.state.changingStreams && _react2.default.createElement(
@@ -162,7 +162,7 @@ var Frame = exports.Frame = function (_Component) {
               defaultValue: this.props.type,
               onChange: function onChange(_ref2) {
                 var target = _ref2.target;
-                console.log(target.value);updateFrame(id, { type: target.value });
+                updateFrame(id, { type: target.value });
               },
               className: "stream_select"
             },
@@ -214,26 +214,26 @@ var Frame = exports.Frame = function (_Component) {
           scrolling: "no",
           allowFullScreen: "true"
         }),
-        _react2.default.createElement("div", { className: "frame_left", onMouseDown: function onMouseDown(e) {
-            return _this2.props.startMove(e, id, 0, 1, 0, -1);
+        _react2.default.createElement("div", { className: "frame_x", onMouseDown: function onMouseDown(e) {
+            return _this2.props.startMove(e, id, 0, 1, 0, 0);
           } }),
-        _react2.default.createElement("div", { className: "frame_height", onMouseDown: function onMouseDown(e) {
+        _react2.default.createElement("div", { className: "frame_h", onMouseDown: function onMouseDown(e) {
             return _this2.props.startMove(e, id, 0, 0, 1, 0);
           } }),
-        _react2.default.createElement("div", { className: "frame_width", onMouseDown: function onMouseDown(e) {
+        _react2.default.createElement("div", { className: "frame_w", onMouseDown: function onMouseDown(e) {
             return _this2.props.startMove(e, id, 0, 0, 0, 1);
           } }),
         _react2.default.createElement("div", { className: "frame_h_and_w", onMouseDown: function onMouseDown(e) {
             return _this2.props.startMove(e, id, 0, 0, 1, 1);
           } }),
-        _react2.default.createElement("div", { className: "frame_w_and_h", onMouseDown: function onMouseDown(e) {
-            return _this2.props.startMove(e, id, 0, 1, 1, -1);
+        _react2.default.createElement("div", { className: "frame_x_and_h", onMouseDown: function onMouseDown(e) {
+            return _this2.props.startMove(e, id, 0, 1, 1, 0);
           } }),
-        _react2.default.createElement("div", { className: "frame_h_and_w_top", onMouseDown: function onMouseDown(e) {
-            return _this2.props.startMove(e, id, 1, 0, -1, 1);
+        _react2.default.createElement("div", { className: "frame_y_and_w", onMouseDown: function onMouseDown(e) {
+            return _this2.props.startMove(e, id, 1, 0, 0, 1);
           } }),
-        _react2.default.createElement("div", { className: "frame_w_and_h_top", onMouseDown: function onMouseDown(e) {
-            return _this2.props.startMove(e, id, 1, 1, -1, -1);
+        _react2.default.createElement("div", { className: "frame_x_and_y", onMouseDown: function onMouseDown(e) {
+            return _this2.props.startMove(e, id, 1, 1, 0, 0);
           } })
       );
     }
@@ -321,11 +321,7 @@ var Help = exports.Help = function Help(props) {
       _react2.default.createElement("br", null),
       "   - resize by grabbing the edges",
       _react2.default.createElement("br", null),
-      "   - or simply hit the \"quick fit\" button up top",
-      _react2.default.createElement("br", null),
-      "6. share what you",
-      "'",
-      "re watching with the \"get link\" button"
+      "   - or simply hit the \"quick fit\" button up top"
     )
   );
 };
@@ -355,6 +351,10 @@ var _react = __webpack_require__(73);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _mousetrap = __webpack_require__(485);
+
+var mousetrap = _interopRequireWildcard(_mousetrap);
+
 var _nav = __webpack_require__(200);
 
 var _frame2 = __webpack_require__(197);
@@ -362,6 +362,8 @@ var _frame2 = __webpack_require__(197);
 var _help = __webpack_require__(198);
 
 var _utils = __webpack_require__(201);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -412,8 +414,6 @@ var Main = exports.Main = function (_Component) {
   }, {
     key: 'newFrame',
     value: function newFrame() {
-      var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
       var frames = Array.from(this.state.frames);
       frames.push({
         id: Date.now(),
@@ -459,6 +459,11 @@ var Main = exports.Main = function (_Component) {
       this.setState({ frames: newFrames }, this.setUrl);
     }
   }, {
+    key: 'clamp',
+    value: function clamp(val, min, max) {
+      return val < min ? min : val > max ? max : val;
+    }
+  }, {
     key: 'startMove',
     value: function startMove(event, id, y, x, h, w) {
       var _this2 = this;
@@ -467,23 +472,28 @@ var Main = exports.Main = function (_Component) {
       event.preventDefault();
       window.addEventListener("mousemove", this.onMove);
       window.addEventListener("mouseup", this.endMove);
+      var start = {};
       var newFrames = this.state.frames.map(function (curFrame) {
         var frame = Object.assign(curFrame);
-        if (frame.id == id) frame.zindex = _this2.state.zindex;
+        if (frame.id == id) {
+          frame.zindex = _this2.state.zindex;
+          if (h == -1 && w == -1) {
+            start.x = 0; //(frame.left * window.innerWidth ) - event.clientX;
+            start.y = 0;
+          } else {
+            start.x = x == 1 ? 0 : frame.width * window.innerWidth; //(frame.left * window.innerWidth ) - event.clientX;
+            start.y = y == 1 ? 0 : frame.height * window.height;
+          }
+        }
         return frame;
       });
       this.setState({
         frames: newFrames,
         frameid: id,
-        mouse: { x: event.clientX, y: event.clientY },
         dir: { y: y, x: x, h: h, w: w },
-        zindex: this.state.zindex + 1
+        zindex: this.state.zindex + 1,
+        start: start
       });
-    }
-  }, {
-    key: 'clamp',
-    value: function clamp(val, min, max) {
-      return val < min ? min : val > max ? max : val;
     }
   }, {
     key: 'onMove',
@@ -494,27 +504,78 @@ var Main = exports.Main = function (_Component) {
           clientY = _ref.clientY;
       var _state = this.state,
           frames = _state.frames,
-          mouse = _state.mouse,
+          start = _state.start,
           dir = _state.dir,
           frameid = _state.frameid;
 
 
-      var dx = (clientX - mouse.x) / window.innerWidth;
-      var dy = (clientY - mouse.y) / window.innerHeight;
-
       var minx = 175 / window.innerWidth;
       var miny = 175 / window.innerHeight;
 
+      var closestx = Infinity,
+          closesty = Infinity;
+      if (this.state.snap) {
+
+        var thisFrame = this.state.frames.find(function (f) {
+          return f.id == frameid;
+        });
+
+        frames.map(function (f) {
+
+          if (f.id == frameid) return;
+
+          var l = f.left * window.innerWidth;
+          var t = f.top * window.innerHeight;
+          var w = l + f.width * window.innerWidth;
+          var h = t + f.height * window.innerHeight;
+
+          if (clientY > t - 12 && clientY < h + 12) {
+            var distx = Math.abs(l - clientX);
+            if (Math.abs(closestx - clientX) >= distx) closestx = l;
+
+            distx = Math.abs(w - clientX);
+            if (Math.abs(closestx - clientX) >= distx) closestx = w;
+          }
+
+          if (clientX > l - 12 && clientX < w + 12) {
+            var disty = Math.abs(t - clientY);
+            if (Math.abs(closesty - clientY) >= disty) closesty = t;
+
+            disty = Math.abs(h - clientY);
+            if (Math.abs(closesty - clientY) >= disty) closesty = h;
+          }
+        });
+      }
+
+      if (Math.abs(closestx - clientX) < 12) clientX = closestx;
+      if (Math.abs(closesty - clientY) < 12) clientY = closesty;
+
       var newFrames = frames.map(function (curFrame) {
         if (curFrame.id == frameid) {
+
           var newFrame = Object.assign(curFrame);
-          newFrame.height = _this3.clamp(newFrame.height + dir.h * dy, miny, 1);
-          newFrame.width = _this3.clamp(newFrame.width + dir.w * dx, minx, 1);
-          newFrame.top = _this3.clamp(newFrame.top + dir.y * dy, 0, .98);
-          newFrame.left = _this3.clamp(newFrame.left + dir.x * dx, .03 - newFrame.width, .98);
+          if (dir.h == 1) newFrame.height = _this3.clamp(clientY / window.innerHeight - newFrame.top, miny, 1);
+          if (dir.w == 1) newFrame.width = _this3.clamp(clientX / window.innerWidth - newFrame.left, minx, 1);
+
+          if (dir.y == 1) {
+            var newy = _this3.clamp((clientY + start.y) / window.innerHeight, 0, .98);
+            if (newFrame.height + (newFrame.top - newy) > miny || dir.h == -1) {
+              if (dir.h == 0) newFrame.height += newFrame.top - newy;
+              newFrame.top = newy;
+            }
+          }
+
+          if (dir.x == 1) {
+            var newx = _this3.clamp((clientX + start.x) / window.innerWidth, 0, .98);
+            if (newFrame.width + (newFrame.left - newx) > minx || dir.w == -1) {
+              if (dir.w == 0) newFrame.width += newFrame.left - newx;
+              newFrame.left = newx;
+            }
+          }
+
           return newFrame;
         }
-        return Object.assign(curFrame);
+        return curFrame;
       });
       this.setState({
         frames: newFrames,
@@ -620,6 +681,13 @@ var Main = exports.Main = function (_Component) {
       window.history.replaceState("", "", this.buildUrl());
     }
   }, {
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      mousetrap.bind("shift+w", this.newFrame);
+      mousetrap.bind("shift+q", this.autoLayout);
+      mousetrap.bind("shift+s", this.setSnap);
+    }
+  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       var _this4 = this;
@@ -720,14 +788,18 @@ var Nav = exports.Nav = function (_Component) {
     _this.state = {
       expand: true
     };
+    _this.setExpand = _this.setExpand.bind(_this);
     return _this;
   }
 
   _createClass(Nav, [{
+    key: "setExpand",
+    value: function setExpand() {
+      this.setState({ expand: !this.state.expand });
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
-
       return _react2.default.createElement(
         "div",
         { style: this.props.style, className: "nav_bar" },
@@ -736,40 +808,66 @@ var Nav = exports.Nav = function (_Component) {
           null,
           _react2.default.createElement(
             "div",
-            {
-              className: "nav_item",
-              onClick: this.props.newWindow
-            },
-            "new window"
+            null,
+            _react2.default.createElement(
+              "span",
+              {
+                className: "nav_item",
+                onClick: this.props.newWindow
+              },
+              "new window"
+            ),
+            _react2.default.createElement(
+              "span",
+              { className: "shortcut" },
+              " W "
+            )
           ),
           _react2.default.createElement(
             "div",
-            {
-              className: "nav_item",
-              onClick: this.props.autoLayout
-            },
-            this.state.expand ? "quick fit" : "q"
+            null,
+            _react2.default.createElement(
+              "span",
+              {
+                className: "nav_item",
+                onClick: this.props.autoLayout
+              },
+              this.state.expand ? "quick fit" : "q"
+            ),
+            _react2.default.createElement(
+              "span",
+              { className: "shortcut" },
+              " Q "
+            )
           ),
           _react2.default.createElement(
             "div",
-            {
-              className: "nav_item",
-              style: { width: "133px" },
-              onClick: this.props.setSnap
-            },
-            "border snap: ",
-            this.props.snap ? "on" : "off"
+            null,
+            _react2.default.createElement(
+              "span",
+              {
+                className: "nav_item",
+                style: { width: "133px" },
+                onClick: this.props.setSnap
+              },
+              "snapping: ",
+              this.props.snap ? "on" : "off"
+            ),
+            _react2.default.createElement(
+              "span",
+              { className: "shortcut" },
+              " S "
+            )
           )
         ),
-        _react2.default.createElement(
+        this.state.expand ? _react2.default.createElement(
           "div",
-          {
-            className: "nav_item",
-            onClick: function onClick() {
-              return _this2.setState({ expand: !_this2.state.expand });
-            }
-          },
-          this.state.expand ? "hide menu" : "+"
+          { className: "nav_item", onClick: this.setExpand },
+          " hide menu"
+        ) : _react2.default.createElement(
+          "div",
+          { className: "nav_item", style: { width: "auto" }, onClick: this.setExpand },
+          " + "
         )
       );
     }

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import * as mousetrap from 'mousetrap';
+
 import { Nav } from './nav';
 import { Frame } from './frame';
 import { Help } from './help';
@@ -35,7 +37,7 @@ export class Main extends Component {
     this.setState({snap: !this.state.snap});
   }
 
-  newFrame(callback = null){
+  newFrame(){
     let frames = Array.from(this.state.frames);
     frames.push({
       id: Date.now(),
@@ -77,49 +79,119 @@ export class Main extends Component {
     this.setState({frames: newFrames}, this.setUrl);
   }
 
+  clamp(val, min, max){
+    return (val < min) ? min : (val > max ? max : (val));
+  }
+
   startMove(event, id, y, x, h, w){
     event.stopPropagation();
     event.preventDefault();
     window.addEventListener("mousemove", this.onMove);
     window.addEventListener("mouseup", this.endMove);
+    let start = {};
     let newFrames = this.state.frames.map(curFrame => {
       let frame = Object.assign(curFrame);
-      if(frame.id == id)
+      if(frame.id == id){
         frame.zindex = this.state.zindex;
+        if(h == -1 && w == -1){
+          start.x = 0;//(frame.left * window.innerWidth ) - event.clientX;
+          start.y = 0;
+        }
+        else {
+          start.x = (x == 1) ? 0 : frame.width * window.innerWidth;//(frame.left * window.innerWidth ) - event.clientX;
+          start.y = (y == 1) ? 0 : frame.height * window.height;
+        }
+
+      }
       return frame;
     });
     this.setState({
       frames: newFrames,
       frameid: id,
-      mouse: { x: event.clientX, y: event.clientY },
       dir:  { y, x, h, w },
-      zindex: this.state.zindex + 1
+      zindex: this.state.zindex + 1,
+      start
     });
   }
 
-  clamp(val, min, max){
-    return (val < min) ? min : (val > max ? max : (val));
-  }
-
   onMove({clientX, clientY}){
-    const { frames, mouse, dir, frameid } = this.state;
-
-    let dx = (clientX - mouse.x) / window.innerWidth;
-    let dy = (clientY - mouse.y) / window.innerHeight;
+    const { frames, start, dir, frameid } = this.state;
 
     let minx = 175 / window.innerWidth;
     let miny = 175 / window.innerHeight;
 
+    let closestx = Infinity, closesty = Infinity;
+    if(this.state.snap){
+
+      let thisFrame = this.state.frames.find(f => f.id == frameid);
+
+      frames.map(f => {
+
+        if(f.id == frameid)
+          return;
+
+        let l = f.left * window.innerWidth;
+        let t = f.top * window.innerHeight;
+        let w = l + (f.width * window.innerWidth);
+        let h = t + (f.height * window.innerHeight);
+
+        if(clientY > (t - 12) && clientY < (h + 12)){
+          let distx = Math.abs(l - clientX);
+          if(Math.abs(closestx - clientX) >= distx)
+            closestx = l;
+
+          distx = Math.abs(w - clientX);
+          if(Math.abs(closestx - clientX) >= distx)
+            closestx = w;
+        }
+
+        if(clientX > (l - 12) && clientX < (w + 12)){
+          let disty = Math.abs(t - clientY);
+          if(Math.abs(closesty - clientY) >= disty)
+            closesty = t;
+
+          disty = Math.abs(h - clientY);
+          if(Math.abs(closesty - clientY) >= disty)
+            closesty = h;
+        }
+      });
+    }
+
+    if(Math.abs(closestx - clientX) < 12)
+      clientX = closestx;
+    if(Math.abs(closesty - clientY) < 12)
+      clientY = closesty;
+
     let newFrames = frames.map(curFrame => {
       if(curFrame.id == frameid){
+
         let newFrame = Object.assign(curFrame);
-        newFrame.height = this.clamp(newFrame.height + (dir.h * dy), miny, 1);
-        newFrame.width  = this.clamp(newFrame.width  + (dir.w * dx), minx, 1);
-        newFrame.top    = this.clamp(newFrame.top    + (dir.y * dy), 0,    .98);
-        newFrame.left   = this.clamp(newFrame.left   + (dir.x * dx), .03 - newFrame.width , .98);
+        if(dir.h == 1)
+          newFrame.height = this.clamp((clientY / window.innerHeight) - newFrame.top, miny, 1);
+        if(dir.w == 1)
+          newFrame.width = this.clamp((clientX / window.innerWidth) - newFrame.left, minx, 1);
+
+        if(dir.y == 1){
+          let newy = this.clamp((clientY + start.y) / window.innerHeight, 0, .98);
+          if(newFrame.height + (newFrame.top - newy) > miny || dir.h == -1){
+            if(dir.h == 0)
+              newFrame.height += (newFrame.top - newy);
+            newFrame.top = newy;
+          }
+        }
+
+        if(dir.x == 1){
+          let newx = this.clamp((clientX + start.x) / window.innerWidth, 0, .98);
+          if(newFrame.width + (newFrame.left - newx) > minx || dir.w == -1){
+            if(dir.w == 0)
+              newFrame.width += (newFrame.left - newx);
+            newFrame.left = newx;
+          }
+        }
+
         return newFrame
       }
-      return Object.assign(curFrame);
+      return curFrame;
     })
     this.setState({
       frames: newFrames,
@@ -217,6 +289,12 @@ export class Main extends Component {
 
   setUrl(){
     window.history.replaceState("","", this.buildUrl());
+  }
+
+  componentWillMount(){
+    mousetrap.bind("shift+w", this.newFrame);
+    mousetrap.bind("shift+q", this.autoLayout);
+    mousetrap.bind("shift+s", this.setSnap);
   }
 
   componentDidMount(){
