@@ -15,33 +15,36 @@
 
 .nav_bar {
   position: absolute;
-  top: 0;
-  height: 32px;
-  right: 0;
-  left: 0;
+  top: -1px;
+  left: -1px;
   background-color: #546E7A;
   vertical-align: middle;
   font-size: 14px;
   color: #000;
+  padding: 3px;
+  border-bottom-right-radius: 5px;
+  border-right: 1px solid #222;
+  border-bottom: 1px solid #222;
+  box-shadow: -2px -2px 12px 0px #222;
+  z-index: 9999;
 }
 
 .nav_item {
   line-height: calc(100% - 4px);
-  margin: 2px 16px;
-  padding: 1px 5px;
+  padding: 4px;
+  vertical-align: middle;
 }
 
 .nav_item:hover {
   cursor: pointer;
-  background-color: #aaa;
-  border-radius: 4px;
+  text-decoration: underline;
 }
 
 .frame {
   background-color: #555;
   position: absolute;
   box-shadow: 0 5px 15px -5px;
-  transition: all .1s ease;
+  transition: all .05s ease;
 }
 
 .frame_top {
@@ -151,8 +154,7 @@
 
 .frame_close:hover, .frame_change:hover {
   cursor: pointer;
-  background-color: #aaa;
-  border-radius: 3px;
+  text-decoration: underline;
 }
 
 .change_stream {
@@ -205,6 +207,7 @@
 .run_change:hover {
   cursor: pointer;
   background-color: #aaa;
+  text-decoration: underline;
 }
 
 .help_text {

@@ -53,15 +53,16 @@ export class Frame extends Component {
 
   render(){
 
-    let { id, src, top, left, width, height,  zindex, mainRect, divx, divy, updateFrame } = this.props;
+    let { id, src, top, left, width, height,  zindex, mainRect, updateFrame } = this.props;
 
     let style={
-      top:    (Math.round(top    / divy) * divy) + "px",
-      left:   (Math.round(left   / divx) * divx) + "px",
-      height: (Math.round(height / divy) * divy) + "px",
-      width:  (Math.round(width  / divx) * divx) + "px",
+      top:    (top    * 100) + "%",
+      left:   (left   * 100) + "%",
+      height: (height * 100) + "%",
+      width:  (width  * 100) + "%",
       zIndex: zindex
     };
+    console.log(style);
 
     return <div className="frame" style={style}>
 
@@ -105,8 +106,8 @@ export class Frame extends Component {
           className="video_frame"
           style={{border: "none"}}
           src={this.state.src}
-          height={(Math.round(height / divy) * divy) - 18}
-          width={(Math.round(width / divx) * divx)}
+          height={height * window.innerHeight}
+          width={width * window.innerWidth}
           frameBorder="0"
           scrolling="no"
           allowFullScreen="true"

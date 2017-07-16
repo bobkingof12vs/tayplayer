@@ -115,18 +115,17 @@ var Frame = exports.Frame = function (_Component) {
           height = _props.height,
           zindex = _props.zindex,
           mainRect = _props.mainRect,
-          divx = _props.divx,
-          divy = _props.divy,
           updateFrame = _props.updateFrame;
 
 
       var style = {
-        top: Math.round(top / divy) * divy + "px",
-        left: Math.round(left / divx) * divx + "px",
-        height: Math.round(height / divy) * divy + "px",
-        width: Math.round(width / divx) * divx + "px",
+        top: top * 100 + "%",
+        left: left * 100 + "%",
+        height: height * 100 + "%",
+        width: width * 100 + "%",
         zIndex: zindex
       };
+      console.log(style);
 
       return _react2.default.createElement(
         "div",
@@ -210,8 +209,8 @@ var Frame = exports.Frame = function (_Component) {
           className: "video_frame",
           style: { border: "none" },
           src: this.state.src,
-          height: Math.round(height / divy) * divy - 18,
-          width: Math.round(width / divx) * divx,
+          height: height * window.innerHeight,
+          width: width * window.innerWidth,
           frameBorder: "0",
           scrolling: "no",
           allowFullScreen: "true"
@@ -387,12 +386,11 @@ var Main = exports.Main = function (_Component) {
       mouse: null,
       dir: null,
       zindex: 1,
-      divx: 1,
-      divy: 1
+      snap: true
     };
 
-    _this.defaultHeight = 318;
-    _this.defaultWidth = 400;
+    _this.defaultHeight = 318 / window.innerHeight;
+    _this.defaultWidth = 400 / window.innerWidth;
 
     _this.newFrame = _this.newFrame.bind(_this);
     _this.updateFrame = _this.updateFrame.bind(_this);
@@ -402,20 +400,26 @@ var Main = exports.Main = function (_Component) {
     _this.startMove = _this.startMove.bind(_this);
     _this.autoLayout = _this.autoLayout.bind(_this);
     _this.buildUrl = _this.buildUrl.bind(_this);
+    _this.setUrl = _this.setUrl.bind(_this);
+    _this.setSnap = _this.setSnap.bind(_this);
     return _this;
   }
 
   _createClass(Main, [{
+    key: 'setSnap',
+    value: function setSnap() {
+      this.setState({ snap: !this.state.snap });
+    }
+  }, {
     key: 'newFrame',
     value: function newFrame() {
       var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-      var rect = this.refs.main.getBoundingClientRect();
       var frames = Array.from(this.state.frames);
       frames.push({
         id: Date.now(),
-        top: Math.floor(rect.height / 2 - this.defaultHeight / 2) - rect.height / 4 + Math.random() * (rect.height / 2),
-        left: Math.floor(rect.width / 2 - this.defaultWidth / 2) - rect.width / 4 + Math.random() * (rect.width / 2),
+        top: .25 + .25 * Math.random(),
+        left: .25 + .25 * Math.random(),
         height: this.defaultHeight,
         width: this.defaultWidth,
         zindex: this.state.zindex,
@@ -427,14 +431,13 @@ var Main = exports.Main = function (_Component) {
   }, {
     key: 'newQueryFrame',
     value: function newQueryFrame(type, stream, zindex) {
-      var rect = this.refs.main.getBoundingClientRect();
       return {
         id: zindex,
-        top: Math.floor(rect.height / 2 - this.defaultHeight / 2),
-        left: Math.floor(rect.width / 2 - this.defaultWidth / 2),
+        top: 0,
+        left: 0,
         height: this.defaultHeight,
         width: this.defaultWidth,
-        zindex: this.state.zindex,
+        zindex: zindex,
         type: type,
         stream: stream
       };
@@ -446,7 +449,7 @@ var Main = exports.Main = function (_Component) {
         if (curFrame.id == id) return Object.assign({}, curFrame, value);
         return Object.assign(curFrame);
       });
-      this.setState({ frames: newFrames });
+      this.setState({ frames: newFrames }, this.setUrl);
     }
   }, {
     key: 'closeFrame',
@@ -454,7 +457,7 @@ var Main = exports.Main = function (_Component) {
       var newFrames = this.state.frames.filter(function (i) {
         return i.id != id;
       });
-      this.setState({ frames: newFrames });
+      this.setState({ frames: newFrames }, this.setUrl);
     }
   }, {
     key: 'startMove',
@@ -490,26 +493,26 @@ var Main = exports.Main = function (_Component) {
 
       var clientX = _ref.clientX,
           clientY = _ref.clientY;
-
-      var mainRect = this.refs.main.getBoundingClientRect();
       var _state = this.state,
           frames = _state.frames,
           mouse = _state.mouse,
           dir = _state.dir,
-          frameid = _state.frameid,
-          divy = _state.divy;
+          frameid = _state.frameid;
 
 
-      var dx = clientX - mouse.x;
-      var dy = clientY - mouse.y;
+      var dx = (clientX - mouse.x) / window.innerWidth;
+      var dy = (clientY - mouse.y) / window.innerHeight;
+
+      var minx = 175 / window.innerWidth;
+      var miny = 175 / window.innerHeight;
 
       var newFrames = frames.map(function (curFrame) {
         if (curFrame.id == frameid) {
           var newFrame = Object.assign(curFrame);
-          newFrame.top = _this3.clamp(newFrame.top + dir.y * dy, divy, mainRect.height - divy);
-          newFrame.left = _this3.clamp(newFrame.left + dir.x * dx, 0, mainRect.width - 12);
-          newFrame.height = _this3.clamp(newFrame.height + dir.h * dy, 175, mainRect.height - divy - 18);
-          newFrame.width = _this3.clamp(newFrame.width + dir.w * dx, 175, mainRect.width);
+          newFrame.height = _this3.clamp(newFrame.height + dir.h * dy, miny, 1);
+          newFrame.width = _this3.clamp(newFrame.width + dir.w * dx, minx, 1);
+          newFrame.top = _this3.clamp(newFrame.top + dir.y * dy, 0, .98);
+          newFrame.left = _this3.clamp(newFrame.left + dir.x * dx, .03 - newFrame.width, .98);
           return newFrame;
         }
         return Object.assign(curFrame);
@@ -528,12 +531,17 @@ var Main = exports.Main = function (_Component) {
   }, {
     key: 'autoLayout',
     value: function autoLayout() {
-      var _this4 = this;
 
-      var count = this.state.frames.length;
-      var rect = this.refs.main.getBoundingClientRect();
-      var width = rect.width;
-      var height = rect.height - this.state.divy;
+      var chats = this.state.frames.filter(function (f) {
+        return f.type == "twitchChat" || f.type == "youtubeChat";
+      });
+      var streams = this.state.frames.filter(function (f) {
+        return f.type == "twitch" || f.type == "youtube";
+      });
+
+      var count = streams.length;
+      var width = window.innerWidth - (chats.length > 0 ? 280 : 0);
+      var height = window.innerHeight;
 
       var bestx = 1,
           besty = 1,
@@ -558,26 +566,33 @@ var Main = exports.Main = function (_Component) {
       }
 
       var curx = -1,
-          cury = 0;
-      var _state2 = this.state,
-          divx = _state2.divx,
-          divy = _state2.divy;
+          cury = 0,
+          chaty = 0;
 
-      var newWidth = Math.round(width / bestx / divx) * divx;
-      var newHeight = Math.round(height / besty / divy) * divy;
+      var newWidth = width / bestx / window.innerWidth;
+      var newHeight = height / besty / window.innerHeight;
+
       var newFrames = this.state.frames.map(function (_frame, index) {
+
         var frame = Object.assign({}, _frame);
-        curx++;
-        if (curx >= bestx) {
-          cury++;
-          curx = 0;
+
+        if (frame.type == "twitch" || frame.type == "twitchVideo" || frame.type == "youtube") {
+          curx++;
+          if (curx >= bestx) {
+            cury++;
+            curx = 0;
+          }
+
+          frame.top = cury * newHeight;
+          frame.height = newHeight;
+          frame.left = curx * newWidth;
+          frame.width = newWidth;
+        } else {
+          frame.top = chaty++ / chats.length;
+          frame.height = 1 / chats.length;
+          frame.left = (window.innerWidth - 280) / window.innerWidth;
+          frame.width = 280 / window.innerWidth;
         }
-
-        frame.top = cury * newHeight + _this4.state.divy;
-        frame.height = newHeight;
-        frame.left = curx * newWidth;
-        frame.width = (index == _this4.state.frames.length - 1 ? bestx - curx : 1) * newWidth;
-
         return frame;
       });
 
@@ -601,9 +616,14 @@ var Main = exports.Main = function (_Component) {
       return url;
     }
   }, {
+    key: 'setUrl',
+    value: function setUrl() {
+      window.history.replaceState("", "", this.buildUrl());
+    }
+  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var _this5 = this;
+      var _this4 = this;
 
       var twitch = (0, _utils.getParameterByName)("twitch");
       var tchat = (0, _utils.getParameterByName)("tchat");
@@ -614,58 +634,45 @@ var Main = exports.Main = function (_Component) {
       var frames = [],
           zindex = 1;
       twitch && twitch.split(',').map(function (t) {
-        return frames.push(_this5.newQueryFrame("twitch", t, zindex++));
+        return frames.push(_this4.newQueryFrame("twitch", t, zindex++));
       });
       tchat && tchat.split(',').map(function (t) {
-        return frames.push(_this5.newQueryFrame("twitchChat", t, zindex++));
+        return frames.push(_this4.newQueryFrame("twitchChat", t, zindex++));
       });
       tvideo && tvideo.split(',').map(function (t) {
-        return frames.push(_this5.newQueryFrame("twitchVideo", t, zindex++));
+        return frames.push(_this4.newQueryFrame("twitchVideo", t, zindex++));
       });
       youtube && youtube.split(',').map(function (t) {
-        return frames.push(_this5.newQueryFrame("youtube", t, zindex++));
+        return frames.push(_this4.newQueryFrame("youtube", t, zindex++));
       });
       ychat && ychat.split(',').map(function (t) {
-        return frames.push(_this5.newQueryFrame("youtubeChat", t, zindex++));
+        return frames.push(_this4.newQueryFrame("youtubeChat", t, zindex++));
       });
       this.setState({ frames: frames, zindex: zindex });
 
-      var screenupdate = function screenupdate() {
-        var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
-
-        var rect = _this5.refs.main.getBoundingClientRect();
-        var divx = rect.width / Math.floor(rect.width / 25);
-        var divy = rect.width / Math.floor(rect.width / 25);
-        _this5.setState({ divx: divx, divy: divy }, callback);
-      };
-      screenupdate(this.autoLayout);
-      window.addEventListener("onresize", screenupdate);
+      this.autoLayout();
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this6 = this;
+      var _this5 = this;
 
       return _react2.default.createElement(
         'div',
-        { id: 'main', ref: 'main', onMouseUp: this.endMove },
+        { id: 'main', onMouseUp: this.endMove },
         _react2.default.createElement(_help.Help, { fade: this.state.frames.length != 0 }),
-        _react2.default.createElement(_nav.Nav, {
-          style: { height: this.state.divy + 'px', lineHeight: this.state.divy + 'px' },
+        _react2.default.createElement(_nav.Nav, _extends({}, this.state, {
           newWindow: this.newFrame,
           autoLayout: this.autoLayout,
-          buildUrl: this.buildUrl
-        }),
+          setSnap: this.setSnap
+        })),
         this.state.frames.map(function (frame) {
           return _react2.default.createElement(_frame2.Frame, _extends({
             key: frame.id
           }, frame, {
-            divx: _this6.state.divx,
-            divy: _this6.state.divy,
-            updateFrame: _this6.updateFrame,
-            closeFrame: _this6.closeFrame,
-            startMove: _this6.startMove,
-            mainRect: _this6.refs.main.getBoundingClientRect()
+            updateFrame: _this5.updateFrame,
+            closeFrame: _this5.closeFrame,
+            startMove: _this5.startMove
           }));
         }),
         this.state.dir !== null && _react2.default.createElement('div', { className: 'blocker' })
@@ -711,54 +718,60 @@ var Nav = exports.Nav = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this, props));
 
-    _this.state = { link: "" };
+    _this.state = {
+      expand: true
+    };
     return _this;
   }
 
   _createClass(Nav, [{
-    key: "link",
-    value: function link() {
-      var _this2 = this;
-
-      this.setState({ link: this.props.buildUrl() }, function () {
-        return _this2.refs.link.select();
-      });
-    }
-  }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this2 = this;
 
       return _react2.default.createElement(
         "div",
         { style: this.props.style, className: "nav_bar" },
-        _react2.default.createElement(
-          "span",
-          {
-            className: "nav_item",
-            onClick: this.props.newWindow
-          },
-          "new window"
+        this.state.expand && _react2.default.createElement(
+          "div",
+          null,
+          _react2.default.createElement(
+            "div",
+            {
+              className: "nav_item",
+              onClick: this.props.newWindow
+            },
+            "new window"
+          ),
+          _react2.default.createElement(
+            "div",
+            {
+              className: "nav_item",
+              onClick: this.props.autoLayout
+            },
+            this.state.expand ? "quick fit" : "q"
+          ),
+          _react2.default.createElement(
+            "div",
+            {
+              className: "nav_item",
+              style: { width: "133px" },
+              onClick: this.props.setSnap
+            },
+            "border snap: ",
+            this.props.snap ? "on" : "off"
+          )
         ),
         _react2.default.createElement(
-          "span",
-          {
-            className: "nav_item",
-            onClick: this.props.autoLayout
-          },
-          "quick fit"
-        ),
-        _react2.default.createElement(
-          "span",
+          "div",
           {
             className: "nav_item",
             onClick: function onClick() {
-              return _this3.link();
+              return _this2.setState({ expand: !_this2.state.expand });
             }
           },
-          "get link"
-        ),
-        _react2.default.createElement("input", { type: "text", ref: "link", className: "share_link", value: this.state.link })
+          this.state.expand ? "hide menu" : "+"
+        )
       );
     }
   }]);

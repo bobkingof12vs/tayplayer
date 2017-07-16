@@ -13,12 +13,11 @@ export class Main extends Component {
       mouse: null,
       dir: null,
       zindex: 1,
-      divx: 1,
-      divy: 1
+      snap: true
     };
 
-    this.defaultHeight = 318;
-    this.defaultWidth = 400;
+    this.defaultHeight = 318 / window.innerHeight;
+    this.defaultWidth = 400 / window.innerWidth;
 
     this.newFrame = this.newFrame.bind(this);
     this.updateFrame = this.updateFrame.bind(this);
@@ -28,15 +27,20 @@ export class Main extends Component {
     this.startMove = this.startMove.bind(this);
     this.autoLayout = this.autoLayout.bind(this);
     this.buildUrl = this.buildUrl.bind(this);
+    this.setUrl = this.setUrl.bind(this);
+    this.setSnap = this.setSnap.bind(this);
+  }
+
+  setSnap(){
+    this.setState({snap: !this.state.snap});
   }
 
   newFrame(callback = null){
-    let rect = this.refs.main.getBoundingClientRect();
     let frames = Array.from(this.state.frames);
     frames.push({
       id: Date.now(),
-      top: Math.floor((rect.height / 2) - (this.defaultHeight / 2)) - (rect.height / 4) + (Math.random() * (rect.height / 2)),
-      left: Math.floor((rect.width / 2) - (this.defaultWidth / 2))  - (rect.width / 4)  + (Math.random() * (rect.width / 2)),
+      top: .25 + (.25 * Math.random()),
+      left: .25 + (.25 * Math.random()),
       height: this.defaultHeight,
       width: this.defaultWidth,
       zindex: this.state.zindex,
@@ -47,14 +51,13 @@ export class Main extends Component {
   }
 
   newQueryFrame(type, stream, zindex){
-    let rect = this.refs.main.getBoundingClientRect();
     return {
       id: zindex,
-      top: Math.floor((rect.height / 2) - (this.defaultHeight / 2)),
-      left: Math.floor((rect.width / 2) - (this.defaultWidth / 2)),
+      top: 0,
+      left: 0,
       height: this.defaultHeight,
       width: this.defaultWidth,
-      zindex: this.state.zindex,
+      zindex: zindex,
       type: type,
       stream: stream
     };
@@ -66,12 +69,12 @@ export class Main extends Component {
         return Object.assign({}, curFrame, value);
       return Object.assign(curFrame);
     });
-    this.setState({frames: newFrames});
+    this.setState({frames: newFrames}, this.setUrl);
   }
 
   closeFrame(id){
     let newFrames = this.state.frames.filter(i => i.id != id);
-    this.setState({frames: newFrames});
+    this.setState({frames: newFrames}, this.setUrl);
   }
 
   startMove(event, id, y, x, h, w){
@@ -99,19 +102,21 @@ export class Main extends Component {
   }
 
   onMove({clientX, clientY}){
-    const mainRect = this.refs.main.getBoundingClientRect();
-    const { frames, mouse, dir, frameid, divy } = this.state;
+    const { frames, mouse, dir, frameid } = this.state;
 
-    let dx = clientX - mouse.x;
-    let dy = clientY - mouse.y;
+    let dx = (clientX - mouse.x) / window.innerWidth;
+    let dy = (clientY - mouse.y) / window.innerHeight;
+
+    let minx = 175 / window.innerWidth;
+    let miny = 175 / window.innerHeight;
 
     let newFrames = frames.map(curFrame => {
       if(curFrame.id == frameid){
         let newFrame = Object.assign(curFrame);
-        newFrame.top    = this.clamp(newFrame.top    + (dir.y * dy), divy,  mainRect.height - divy);
-        newFrame.left   = this.clamp(newFrame.left   + (dir.x * dx), 0,     mainRect.width  - 12);
-        newFrame.height = this.clamp(newFrame.height + (dir.h * dy), 175,   mainRect.height - divy - 18);
-        newFrame.width  = this.clamp(newFrame.width  + (dir.w * dx), 175,   mainRect.width);
+        newFrame.height = this.clamp(newFrame.height + (dir.h * dy), miny, 1);
+        newFrame.width  = this.clamp(newFrame.width  + (dir.w * dx), minx, 1);
+        newFrame.top    = this.clamp(newFrame.top    + (dir.y * dy), 0,    .98);
+        newFrame.left   = this.clamp(newFrame.left   + (dir.x * dx), .03 - newFrame.width , .98);
         return newFrame
       }
       return Object.assign(curFrame);
@@ -128,10 +133,13 @@ export class Main extends Component {
   }
 
   autoLayout(){
-    let count = this.state.frames.length;
-    let rect = this.refs.main.getBoundingClientRect();
-    let width = rect.width;
-    let height = rect.height - this.state.divy;
+
+    let chats = this.state.frames.filter(f => f.type == "twitchChat" || f.type == "youtubeChat");
+    let streams = this.state.frames.filter(f => f.type == "twitch" || f.type == "youtube");
+
+    let count = streams.length;
+    let width = window.innerWidth - (chats.length > 0 ? 280 : 0);
+    let height = window.innerHeight;
 
     let bestx = 1, besty = 1, bestArea = 1, area;
 
@@ -156,25 +164,35 @@ export class Main extends Component {
       }
     }
 
-    let curx = -1, cury = 0;
-    const {divx, divy} = this.state;
-    let newWidth = Math.round((width / bestx) / divx) * divx;
-    let newHeight = Math.round((height / besty) / divy) * divy;
+    let curx = -1, cury = 0, chaty = 0;
+
+    let newWidth = (width / bestx) / window.innerWidth;
+    let newHeight = (height / besty) / window.innerHeight;
+
     let newFrames = this.state.frames.map((_frame, index) => {
+
       let frame = Object.assign({}, _frame);
-      curx++;
-      if(curx >= bestx){
-        cury++;
-        curx = 0;
+
+      if(frame.type == "twitch" || frame.type == "twitchVideo" || frame.type == "youtube"){
+        curx++;
+        if(curx >= bestx){
+          cury++;
+          curx = 0;
+        }
+
+        frame.top = cury * newHeight;
+        frame.height = newHeight;
+        frame.left = curx * newWidth;
+        frame.width = newWidth;
       }
-
-      frame.top = (cury * newHeight) + this.state.divy;
-      frame.height = newHeight;
-      frame.left = curx * newWidth;
-      frame.width = ((index == this.state.frames.length - 1) ?  (bestx - curx) : 1 ) * newWidth;
-
+      else {
+        frame.top = chaty++ / chats.length;
+        frame.height = 1 / chats.length;
+        frame.left = (window.innerWidth - 280) / window.innerWidth;
+        frame.width = 280 / window.innerWidth;
+      }
       return frame;
-    })
+    });
 
     this.setState({frames: newFrames});
   }
@@ -197,8 +215,11 @@ export class Main extends Component {
     return url;
   }
 
-  componentDidMount(){
+  setUrl(){
+    window.history.replaceState("","", this.buildUrl());
+  }
 
+  componentDidMount(){
     let twitch = getParameterByName("twitch");
     let tchat = getParameterByName("tchat");
     let tvideo = getParameterByName("tvideo");
@@ -213,35 +234,25 @@ export class Main extends Component {
     ychat   && ychat  .split(',').map(t => frames.push(this.newQueryFrame("youtubeChat", t, zindex++)));
     this.setState({frames, zindex});
 
-    let screenupdate = (callback = ()=>{}) => {
-      let rect = this.refs.main.getBoundingClientRect();
-      let divx = rect.width / Math.floor(rect.width / 25);
-      let divy = rect.width / Math.floor(rect.width / 25);
-      this.setState({divx, divy}, callback);
-    }
-    screenupdate(this.autoLayout);
-    window.addEventListener("onresize", screenupdate);
+    this.autoLayout();
   }
 
   render(){
-    return <div id="main" ref="main" onMouseUp={this.endMove}>
+    return <div id="main" onMouseUp={this.endMove}>
       <Help fade={this.state.frames.length != 0}/>
       <Nav
-        style={{height: `${this.state.divy}px`, lineHeight: `${this.state.divy}px`}}
+        {...this.state}
         newWindow={this.newFrame}
         autoLayout={this.autoLayout}
-        buildUrl={this.buildUrl}
+        setSnap={this.setSnap}
       />
       {this.state.frames.map(frame => {
         return <Frame
             key={frame.id}
             {...frame}
-            divx={this.state.divx}
-            divy={this.state.divy}
             updateFrame={this.updateFrame}
             closeFrame={this.closeFrame}
             startMove={this.startMove}
-            mainRect={this.refs.main.getBoundingClientRect()}
           />
       })}
       {
